@@ -3,15 +3,15 @@ import './styles.scss';
 function Header() {
 	return (
 		<>
-			<div class="flex-container header-container">
-				UPB
-			</div>
-			<div class="flex-container header-container">
-				Counter
+			<div class="header-container">
+				<span>Pagina principală</span>
+				<span>Testare</span>
+				<span>Vaccinare</span>
+				<span>Autentificare</span>
 			</div>
 			<div id="title">
 				<span>
-					APPLE COUNTER
+					ROVACCINARE
 				</span>
 			</div>
 		</>

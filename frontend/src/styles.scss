@@ -3,14 +3,8 @@
 	src: url(FuturaPTMedium.otf);
 }
 
-.flex-container{
-	flex-grow: 0;
-    display:inline-block;
-}
-
 .header-container {
-	padding-left: 18.75vw;
-	padding-right: 18.75vw;
+	width: 100%;
 	padding-top: 1vw;
 	padding-bottom: 1vw;
 	margin-bottom: 10px;
@@ -20,24 +14,54 @@
 	font-weight: bold;
 }
 
-.counter-container {
-	display: inline-block;
-	margin-left: 28vw;
-	padding: 20px;
-	margin-top: 7vw;
-	margin-bottom: 7vw;
-	border-radius: 10px;
-	box-shadow: 0 3px 6px 0 rgba(0, 0, 0, .16);
+.header-container span {
+	padding: 10px;
 }
 
-.counter-container p {
+#title {
+    background-image: url("title.jpg");
+	background-size: cover;
+	height: 45vh;
+    width: 100%;
 	text-align: center;
+}
+
+#title span {
+	line-height: 45vh;
+	vertical-align: middle;
 	font-family: FuturaPT;
+	font-size: 48px;
+	color: white;
+	background-color: rgba(255,255,255,0.5);
+	padding: 50px;
+}
+
+.news {
+	width: 75%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 4vw;
+	margin-bottom: 4vw;
+	padding: 4vw;
+	border-radius: 10px;
+	box-shadow: 6px 3px 6px 3px rgba(0, 0, 0, .16);
+}
+
+.news td {
+	padding: 7px;
+}
+
+.news tr:nth-child(3n+1) {
+	font-size: 22px;
 	font-weight: bold;
-	padding: 10px;
-	margin: 20px;
-	box-shadow: 0 3px 6px 0 rgba(0, 0, 0, .16);
-	height: 2.5	vh;
+}
+
+.news tr:nth-child(3n+2) {
+	font-size: 17px;
+}
+
+.news tr:nth-child(3n+3) {
+	font-size: 17px;
 }
 
 button {
@@ -58,22 +82,4 @@ button {
 	
 	font-family: FuturaPT;
 	font-weight: bold;
-}
-
-#title {
-    background-image: url("title.jpg");
-	background-size: cover;
-	height: 30vh;
-    width: 79vw;
-	text-align: center;
-}
-
-#title span {
-	line-height: 30vh;
-	vertical-align: middle;
-	font-family: FuturaPT;
-	font-size: 48px;
-	color: white;
-	background-color:rgba(255,255,255,0.5);
-	padding: 30px;
 }
