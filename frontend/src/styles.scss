@@ -1,0 +1,79 @@
+@font-face {
+	font-family: FuturaPT;
+	src: url(FuturaPTMedium.otf);
+}
+
+.flex-container{
+	flex-grow: 0;
+    display:inline-block;
+}
+
+.header-container {
+	padding-left: 18.75vw;
+	padding-right: 18.75vw;
+	padding-top: 1vw;
+	padding-bottom: 1vw;
+	margin-bottom: 10px;
+	box-shadow: 0 3px 0 0 rgba(0, 0, 0, .16);
+	
+	font-family: FuturaPT;
+	font-weight: bold;
+}
+
+.counter-container {
+	display: inline-block;
+	margin-left: 28vw;
+	padding: 20px;
+	margin-top: 7vw;
+	margin-bottom: 7vw;
+	border-radius: 10px;
+	box-shadow: 0 3px 6px 0 rgba(0, 0, 0, .16);
+}
+
+.counter-container p {
+	text-align: center;
+	font-family: FuturaPT;
+	font-weight: bold;
+	padding: 10px;
+	margin: 20px;
+	box-shadow: 0 3px 6px 0 rgba(0, 0, 0, .16);
+	height: 2.5	vh;
+}
+
+button {
+	background-color: #4B4B4B;
+	color: #FFFFFF;
+	padding: 15px 32px;
+	margin: 0 5px;
+}
+
+.footer-container {
+	background-color: #4B4B4B;
+	color: #BBBBBB;
+	
+	padding-left: 18.75vw;
+	padding-right: 18.75vw;
+	padding-top: 1vw;
+	padding-bottom: 1vw;
+	
+	font-family: FuturaPT;
+	font-weight: bold;
+}
+
+#title {
+    background-image: url("title.jpg");
+	background-size: cover;
+	height: 30vh;
+    width: 79vw;
+	text-align: center;
+}
+
+#title span {
+	line-height: 30vh;
+	vertical-align: middle;
+	font-family: FuturaPT;
+	font-size: 48px;
+	color: white;
+	background-color:rgba(255,255,255,0.5);
+	padding: 30px;
+}
