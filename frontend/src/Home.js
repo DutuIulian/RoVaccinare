@@ -1,4 +1,3 @@
-import React, { useReducer, useEffect } from 'react';
 import './styles.scss';
 
 function Home() {
