@@ -6,21 +6,21 @@ services:
       PORT: 3000
       PGHOST: db
       PGUSER: dbuser
-      PGDATABASE: bookstore
+      PGDATABASE: rovaccinare
       PGPASSWORD: dbpass
       PGPORT: 54321
     ports:
       - 3000:3000
     networks:
-      - lab5network
+      - mynetwork
   
   db:
     networks:
-      - lab5network
+      - mynetwork
 
   pgadmin:
     networks:
-      - lab5network
+      - mynetwork
 
 networks:
-  lab5network:
+  mynetwork:

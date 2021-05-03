@@ -15,14 +15,14 @@ services:
     environment:
       POSTGRES_USER: dbuser
       POSTGRES_PASSWORD: dbpass
-      POSTGRES_DB: bookstore
+      POSTGRES_DB: rovaccinare
       TZ: Europe/Bucharest
       PGTZ: Europe/Bucharest
     ports:
       - "54321:5432"
     volumes:
-      - lab6_pgdb:/var/lib/postgresql/data
+      - my_pgdb:/var/lib/postgresql/data
       - ./init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
 
 volumes:
-  lab6_pgdb:
+  my_pgdb:

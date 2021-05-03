@@ -5,13 +5,16 @@ const {
 const getAllAsync = async() => {
     console.info ('Getting all users from database');
     
-    return await queryAsync('SELECT id, username, role_id FROM users');
+    return await queryAsync('SELECT id, email, role_id FROM users');
 };
 
-const addAsync = async (username, password) => {
-    console.info(`Adding user ${username}`);
+const addAsync = async (email, password, last_name, first_name, cnp, address, role_id) => {
+    console.info(`Adding user ${email} ${role_id}`);
 
-    const users = await queryAsync('INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id, username, role_id', [username, password]);
+    const users = await queryAsync(
+        'INSERT INTO users (email, password, last_name, first_name, cnp, address, role_id) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id, email, role_id',
+        [email, password, last_name, first_name, cnp, address, role_id]
+    );
     return users[0];
 };
 
@@ -35,5 +38,5 @@ module.exports = {
     getAllAsync,
     addAsync,
     getByUsernameWithRoleAsync,
-	updateRole
+    updateRole
 }

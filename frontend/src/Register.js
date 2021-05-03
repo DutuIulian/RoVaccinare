@@ -8,28 +8,63 @@ class Register extends React.Component {
 
 		this.state = {
 			fields: {},
-			errors: {}
+			successMessage: "",
+			errorMessage: ""
 		}
 	}
 	
 	handleValidation(){
 		let fields = this.state.fields;
-		let errors = {};
+		let errorMessage = "";
+		let isValid = true;
 
 		if(fields["password"].localeCompare(fields["confirmPassword"]) !== 0) {
-			errors["password"] = "Parolele diferă";
-			return false;
+			errorMessage = "Parolele diferă";
+			isValid = false;
 		}
 		
-		this.setState({errors: errors});
-		return true;
+		this.setState({errorMessage: errorMessage});
+		return isValid;
 	}
 	
-	formSubmit(e){
+	handleStatus(status) {
+		if(Math.floor(status / 100) === 2) {
+			this.setState({successMessage: 'Contul a fost creat. Folosiți link-ul de activare primit pe e-mail.'});
+			this.setState({errorMessage: ''});
+		} else {
+			this.setState({errorMessage: 'A apărut o eroare!'});
+			this.setState({successMessage: ''});
+		}
+	}
+	
+	handleError() {
+		this.setState({errorMessage: 'A apărut o eroare!'});
+		this.setState({successMessage: ''});
+	}
+	
+	formSubmit(e) {
 		e.preventDefault();
 
 		if(this.handleValidation()) {
+			const data = {
+				"email": this.state.fields["email"],
+				"password": this.state.fields["password"],
+				"last_name": this.state.fields["last_name"],
+				"first_name": this.state.fields["first_name"],
+				"cnp": this.state.fields["cnp"],
+				"address": this.state.fields["address"],
+				"role": "USER"
+			};
+			const url = "http://localhost:3000/api/v1/users/register";
 			
+			fetch(url, {
+				method: "POST",
+				mode: "cors",
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(data)
+			})
+			.then(response => this.handleStatus(response.status))
+			.catch(error => this.handleError());
 		}
 	}
 	
@@ -59,40 +94,41 @@ class Register extends React.Component {
 									<span>
 										<i aria-hidden="true" class="fa fa-lock"/>
 									</span>
-									<input type="password" name="password" placeholder="Parola" onChange={this.handleChange.bind(this, "password")} required />
+									<input type="password" name="password" placeholder="Parola" onChange={this.handleChange.bind(this, "password")} minLength="4" required />
 								</div>
 								<div class="input_field">
 									<span>
 										<i aria-hidden="true" class="fa fa-lock"/>
 									</span>
-									<input type="password" name="confirmPassword" placeholder="Parola (confirmare)" onChange={this.handleChange.bind(this, "confirmPassword")} required />
+									<input type="password" name="confirmPassword" placeholder="Parola (confirmare)" onChange={this.handleChange.bind(this, "confirmPassword")} minLength="4" required />
 								</div>
 								<div class="input_field">
 									<span>
 										<i aria-hidden="true" class="fa fa-user"/>
 									</span>
-									<input type="text" name="lastName" placeholder="Nume" onChange={this.handleChange.bind(this, "lastName")} required />
+									<input type="text" name="last_name" placeholder="Nume" onChange={this.handleChange.bind(this, "last_name")} required />
 								</div>
 								<div class="input_field">
 									<span>
 										<i aria-hidden="true" class="fa fa-user"/>
 									</span>
-									<input type="text" name="firstName" placeholder="Prenume" onChange={this.handleChange.bind(this, "firstName")} required />
+									<input type="text" name="first_name" placeholder="Prenume" onChange={this.handleChange.bind(this, "first_name")} required />
 								</div>
 								<div class="input_field">
 									<span>
 										<i aria-hidden="true" class="fa fa-address-card"/>
 									</span>
-									<input type="text" name="cnp" pattern="[0-9]*" placeholder="CNP" onChange={this.handleChange.bind(this, "cnp")} required />
+									<input type="text" name="cnp" pattern="[0-9]*" placeholder="CNP" onChange={this.handleChange.bind(this, "cnp")} minLength="13" maxLength="13" required />
 								</div>
 								<div class="input_field">
 									<span>
 										<i aria-hidden="true" class="fa fa-address-card"/>
 									</span>
-									<input type="text" name="address" placeholder="Adresă" requiredonChange={this.handleChange.bind(this, "address")} required />
+									<input type="text" name="address" placeholder="Adresă" onChange={this.handleChange.bind(this, "address")} required />
 								</div>
 								<input class="button" type="submit" value="Înregistrare"/>
-								<span style={{color: "red", "display": "table", "margin": "0 auto"}}>{this.state.errors["password"]}</span>
+								<span style={{color: "green", "display": "table", "margin": "0 auto"}}>{this.state.successMessage}</span>
+								<span style={{color: "red", "display": "table", "margin": "0 auto"}}>{this.state.errorMessage}</span>
 							</form>
 						</div>
 					</div>

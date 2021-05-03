@@ -3,8 +3,8 @@ const ServerError = require('./ServerError.js');
 class UserBody {
     constructor (body) {
 
-        if (!body.username) {
-            throw new ServerError("Username is missing", 400);
+        if (!body.email) {
+            throw new ServerError("E-mail is missing", 400);
         }
     
         if (!body.password) {
@@ -15,24 +15,69 @@ class UserBody {
             throw new ServerError("Password is too short!", 400);
         }
 
-        this.username = body.username;
+        if (!body.last_name) {
+            throw new ServerError("Last name is missing", 400);
+        }
+
+        if (!body.first_name) {
+            throw new ServerError("First name is missing", 400);
+        }
+
+        if (!body.cnp) {
+            throw new ServerError("CNP is missing", 400);
+        }
+
+        if (!body.address) {
+            throw new ServerError("Address is missing", 400);
+        }
+
+        if (!body.role) {
+            body.role = "USER";
+        }
+
+        this.email = body.email;
         this.password = body.password;
+        this.last_name = body.last_name;
+        this.first_name = body.first_name;
+        this.cnp = body.cnp;
+        this.address = body.address;
+        this.role = body.role;
     }
 
-    get Username () {
-        return this.username;
+    get Email () {
+        return this.email;
     }
 
     get Password () {
         return this.password;
     }
+
+    get LastName () {
+        return this.last_name;
+    }
+
+    get FirstName () {
+        return this.first_name;
+    }
+
+    get CNP () {
+        return this.cnp;
+    }
+
+    get Address () {
+        return this.address;
+    }
+
+    get Role () {
+        return this.role;
+    }
 }
 
-class UserRegisterRepsonse {
+class UserRegisterResponse {
     constructor(user) {
-        this.username = user.username;
+        this.email = user.email;
         this.id = user.id;
-        this.roleId = user.role_id;
+        this.role_id = user.role_id;
     }
 }
 class UserLoginResponse {
@@ -44,5 +89,5 @@ class UserLoginResponse {
 module.exports =  {
     UserBody,
     UserLoginResponse,
-    UserRegisterRepsonse
+    UserRegisterResponse
 }

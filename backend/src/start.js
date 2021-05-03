@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const helmet = require('helmet');
+const cors = require('cors');
 const createError = require('http-errors');
 
 require('express-async-errors');
@@ -15,6 +16,7 @@ const app = express();
 app.use(helmet());
 app.use(morgan(':remote-addr - :remote-user [:date[web]] ":method :url HTTP/:http-version" :status :res[content-length]'));
 app.use(express.json());
+app.use(cors());
 
 app.use('/api', routes);
 

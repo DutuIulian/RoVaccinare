@@ -1,27 +1,3 @@
-CREATE TABLE IF NOT EXISTS authors (
-    id serial PRIMARY KEY,
-    first_name varchar NOT NULL,
-    last_name varchar NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS publishers (
-    id serial PRIMARY KEY,
-    name varchar NOT NULL UNIQUE
-);
-
-CREATE TABLE IF NOT EXISTS books (
-    id serial PRIMARY KEY,
-    name varchar NOT NULL,
-    author_id integer REFERENCES authors(id)
-);
-
-CREATE TABLE IF NOT EXISTS publishers_books (
-    book_id integer REFERENCES books(id),
-    publisher_id integer REFERENCES publishers(id),
-    price integer NOT NULL,
-    PRIMARY KEY (book_id, publisher_id) 
-);
-
 CREATE TABLE IF NOT EXISTS roles (
     id serial PRIMARY KEY,
     value varchar NOT NULL UNIQUE
@@ -29,10 +5,17 @@ CREATE TABLE IF NOT EXISTS roles (
 
 CREATE TABLE IF NOT EXISTS users (
     id serial PRIMARY KEY,
-    username varchar NOT NULL UNIQUE,
+    email varchar NOT NULL UNIQUE,
     password varchar NOT NULL,
+    last_name varchar NOT NULL,
+    first_name varchar NOT NULL,
+    cnp varchar NOT NULL,
+    address varchar NOT NULL,
     role_id integer REFERENCES roles(id)
 );
 
 INSERT INTO roles (value) VALUES ('ADMIN');
-INSERT INTO users (username, password, role_id) VALUES ('admin', '$2y$10$BLMZFAnCPXX0cVRmdPP3Meu3NR/xWucAyQ4aAW2z57RlLdLPvH0Hi', 1);
+INSERT INTO roles (value) VALUES ('SUPPORT');
+INSERT INTO roles (value) VALUES ('USER');
+INSERT INTO users (email, password, last_name, first_name, cnp, address, role_id)
+    VALUES ('admin@localhost', '$2y$10$BLMZFAnCPXX0cVRmdPP3Meu3NR/xWucAyQ4aAW2z57RlLdLPvH0Hi', 'Admin', '', '', '', 1);

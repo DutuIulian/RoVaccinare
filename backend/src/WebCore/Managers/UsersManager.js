@@ -1,4 +1,5 @@
 const UsersRepository = require('../../Infrastructure/PostgreSQL/Repository/UsersRepository.js');
+const RolesRepository = require('../../Infrastructure/PostgreSQL/Repository/RolesRepository.js');
 const AuthenticatedUserDto = require('../DTOs/AuthenticatedUserDto.js');
 const RegisteredUserDto = require('../DTOs/RegisteredUserDto.js');
 const MyJwt = require('../Security/Jwt/index.js');
@@ -14,45 +15,44 @@ const authenticateAsync = async (username, hashedPassword) => {
     if (!user) {
         throw new ServerError(`Utilizatorul cu username ${username} nu exista in sistem!`, 404);
     }
+     
+    bcrypt.compare(hashedPassword, user.password).then(function(result) {
+        if(result === false) {
+            throw new ServerError("Wrong password", 401);
+        }
+    });
 
-    /**
-     * TODO
-     * 
-     * pas 1: verifica daca parola este buna (hint: functia compareAsync)
-     * pas 1.1.: compare returneaza true sau false. Daca parola nu e buna, arunca eroare
-     * pas 2: genereaza token cu payload-ul JwtPayload
-     * pas 3: returneaza AuthenticatedUserDto
-     */
-	 
-	bcrypt.compare(hashedPassword, user.password).then(function(result) {
-		if(result === false) {
-			throw new ServerError("Wrong password", 401);
-		}
-	});
-
-	const payload = new JwtPayloadDto(user.id, user.role);
-	const token = await MyJwt.generateTokenAsync(payload);
-	const authenticatedUserDto = new AuthenticatedUserDto(token, user.username, user.role);
-	
-	return authenticatedUserDto;
+    const payload = new JwtPayloadDto(user.id, user.role);
+    const token = await MyJwt.generateTokenAsync(payload);
+    const authenticatedUserDto = new AuthenticatedUserDto(token, user.username, user.role);
+    
+    return authenticatedUserDto;
 };
 
-const registerAsync = async (username, plainTextPassword) => {
-    /**
-     * TODO
-     * 
-     * pas 1: cripteaza parola
-     * pas 2: adauga (username, parola criptata) in baza de date folosind UsersRepository.addAsync
-     * pas 3: returneaza RegisteredUserDto
-     * 
-     */
-	 
-	 const salt = await bcrypt.genSalt(10);
-	 const encryptedPasword = await bcrypt.hash(plainTextPassword, salt);
-	 const user = await UsersRepository.addAsync(username, encryptedPasword);
-	 const registeredUser = new RegisteredUserDto(user.id, user.username, user.role_id);
-	 
-	 return registeredUser;
+const registerAsync = async (email, plainTextPassword, last_name, first_name, cnp, address, role) => {
+    const salt = await bcrypt.genSalt(10);
+    const encryptedPasword = await bcrypt.hash(plainTextPassword, salt);
+    const roles = await RolesRepository.getAllAsync();
+    
+    let role_id = "-1";
+    for(let i = 0; i < roles.length; i++) {
+        if(roles[i]["value"].localeCompare(role) === 0) {
+            role_id = roles[i]["id"];
+            console.log(roles[i]["id"]);
+            console.log(roles[i]["value"]);
+            console.log('jeje0');
+        }
+    }
+    
+    if("-1".localeCompare(role_id) === 0) {
+        console.log('jeje');
+        throw new ServerError(`Invalid user role!`, 400);
+    }
+    
+    const user = await UsersRepository.addAsync(email, encryptedPasword, last_name, first_name, cnp, address, role_id);
+    const registeredUser = new RegisteredUserDto(user.id, user.email, user.role_id);
+    
+    return registeredUser;
 };
 
 module.exports = {
