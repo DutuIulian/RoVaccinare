@@ -3,6 +3,12 @@ CREATE TABLE IF NOT EXISTS roles (
     value varchar NOT NULL UNIQUE
 );
 
+CREATE TABLE IF NOT EXISTS activation_codes (
+    id serial PRIMARY KEY,
+    code varchar NOT NULL UNIQUE,
+    expiration timestamp NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS users (
     id serial PRIMARY KEY,
     email varchar NOT NULL UNIQUE,
@@ -11,7 +17,8 @@ CREATE TABLE IF NOT EXISTS users (
     first_name varchar NOT NULL,
     cnp varchar NOT NULL,
     address varchar NOT NULL,
-    role_id integer REFERENCES roles(id)
+    role_id integer REFERENCES roles(id),
+    activation_code_id integer REFERENCES activation_codes(id)
 );
 
 INSERT INTO roles (value) VALUES ('ADMIN');

@@ -8,12 +8,12 @@ const getAllAsync = async() => {
     return await queryAsync('SELECT id, email, role_id FROM users');
 };
 
-const addAsync = async (email, password, last_name, first_name, cnp, address, role_id) => {
+const addAsync = async (email, password, last_name, first_name, cnp, address, role_id, activation_code_id) => {
     console.info(`Adding user ${email} ${role_id}`);
 
     const users = await queryAsync(
-        'INSERT INTO users (email, password, last_name, first_name, cnp, address, role_id) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id, email, role_id',
-        [email, password, last_name, first_name, cnp, address, role_id]
+        'INSERT INTO users (email, password, last_name, first_name, cnp, address, role_id, activation_code_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id, email, role_id',
+        [email, password, last_name, first_name, cnp, address, role_id, activation_code_id]
     );
     return users[0];
 };

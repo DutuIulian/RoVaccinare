@@ -1,7 +1,9 @@
 const UsersRepository = require('../../Infrastructure/PostgreSQL/Repository/UsersRepository.js');
 const RolesRepository = require('../../Infrastructure/PostgreSQL/Repository/RolesRepository.js');
+const ActivationCodesRepository = require('../../Infrastructure/PostgreSQL/Repository/ActivationCodesRepository.js');
 const AuthenticatedUserDto = require('../DTOs/AuthenticatedUserDto.js');
 const RegisteredUserDto = require('../DTOs/RegisteredUserDto.js');
+const ServerError = require('../../WebApp/Models/ServerError.js');
 const MyJwt = require('../Security/Jwt/index.js');
 const JwtPayloadDto = require('../DTOs/JwtPayloadDto.js');
 const bcrypt = require('bcryptjs');
@@ -29,6 +31,18 @@ const authenticateAsync = async (username, hashedPassword) => {
     return authenticatedUserDto;
 };
 
+const makeCode = async (length) => {
+    var result           = [];
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+
+    for ( var i = 0; i < length; i++ ) {
+        result.push(characters.charAt(Math.floor(Math.random() * charactersLength)));
+    }
+
+    return result.join('');
+}
+
 const registerAsync = async (email, plainTextPassword, last_name, first_name, cnp, address, role) => {
     const salt = await bcrypt.genSalt(10);
     const encryptedPasword = await bcrypt.hash(plainTextPassword, salt);
@@ -43,13 +57,15 @@ const registerAsync = async (email, plainTextPassword, last_name, first_name, cn
             console.log('jeje0');
         }
     }
-    
     if("-1".localeCompare(role_id) === 0) {
-        console.log('jeje');
         throw new ServerError(`Invalid user role!`, 400);
     }
     
-    const user = await UsersRepository.addAsync(email, encryptedPasword, last_name, first_name, cnp, address, role_id);
+    const code = await makeCode(16);
+    const expiration = new Date(Date.now() + 15 * 60000);
+    const activationCode = await ActivationCodesRepository.addAsync(code, expiration);
+    
+    const user = await UsersRepository.addAsync(email, encryptedPasword, last_name, first_name, cnp, address, role_id, activationCode.id);
     const registeredUser = new RegisteredUserDto(user.id, user.email, user.role_id);
     
     return registeredUser;
