@@ -3,12 +3,6 @@ import { Link } from 'react-router-dom';
 import './register.scss';
 
 class Login extends React.Component {
-	/*static propTypes = {
-		match: PropTypes.object.isRequired,
-		location: PropTypes.object.isRequired,
-		history: PropTypes.object.isRequired
-	};*/
-
 	constructor(props){
 		super(props);
 
@@ -76,7 +70,7 @@ class Login extends React.Component {
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(data)
 		})
-		.then(response => this.handleResponse(response.status, response.body.token))
+		.then(response => response.json().then(json => this.handleResponse(response.status, json.response.token))) 
 		.catch(error => this.handleError());
 	}
 

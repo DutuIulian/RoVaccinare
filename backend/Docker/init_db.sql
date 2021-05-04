@@ -23,6 +23,31 @@ CREATE TABLE IF NOT EXISTS users (
     activation_code_id integer REFERENCES activation_codes(id)
 );
 
+CREATE TABLE IF NOT EXISTS counties (
+    id serial PRIMARY KEY,
+    name varchar NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS localities (
+    id serial PRIMARY KEY,
+    name varchar NOT NULL,
+    county_id integer REFERENCES counties(id)
+);
+
+CREATE TABLE IF NOT EXISTS test_centers (
+    id serial PRIMARY KEY,
+    name varchar NOT NULL,
+    address varchar NOT NULL,
+    locality_id integer REFERENCES localities(id)
+);
+
+CREATE TABLE IF NOT EXISTS tests (
+    id serial PRIMARY KEY,
+    name varchar NOT NULL,
+    available_quantity integer DEFAULT 0,
+    center_id integer REFERENCES test_centers(id)
+);
+
 INSERT INTO roles (value) VALUES ('ADMIN');
 INSERT INTO roles (value) VALUES ('SUPPORT');
 INSERT INTO roles (value) VALUES ('USER');

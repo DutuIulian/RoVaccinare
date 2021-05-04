@@ -29,6 +29,8 @@ class Activate extends React.Component {
     handleStatus(status) {
         if(Math.floor(status / 100) === 2) {
             this.setState({message: "Succes! Contul a fost activat."});
+        } else if(status === 409) {
+            this.setState({message: "Codul a fost deja folosit!"});
         } else if(status === 410) {
             this.setState({message: "Codul a expirat!"});
         } else {
