@@ -27,10 +27,24 @@ const getByUsernameWithRoleAsync = async (username) => {
     return users[0];
 };
 
+const getByActivationCodeIdAsync = async (activation_code_id) => {
+    console.info (`Getting user with activation_code_id ${activation_code_id}`);
+    
+    const users = await queryAsync('SELECT id, email, role_id FROM users WHERE activation_code_id=$1', [activation_code_id]);
+    return users[0];
+};
+
 const updateRole = async (userId, roleId) => {
-    console.info(`Updating user with username ${username}`);
+    console.info(`Updating user with userId ${userId}`);
     
     const users = await queryAsync(`UPDATE users SET role_id = $1 WHERE id = $2`, [roleId, userId]);
+    return users[0];
+};
+
+const updateActivatedAsync = async (userId, activated) => {
+    console.info(`Updating user with userId ${userId}`);
+    
+    const users = await queryAsync(`UPDATE users SET activated = $1 WHERE id = $2`, [activated, userId]);
     return users[0];
 };
 
@@ -38,5 +52,7 @@ module.exports = {
     getAllAsync,
     addAsync,
     getByUsernameWithRoleAsync,
-    updateRole
+    getByActivationCodeIdAsync,
+    updateRole,
+    updateActivatedAsync
 }

@@ -8,14 +8,13 @@ const MyJwt = require('../Security/Jwt/index.js');
 const JwtPayloadDto = require('../DTOs/JwtPayloadDto.js');
 const bcrypt = require('bcryptjs');
 
-const authenticateAsync = async (username, hashedPassword) => {
+const authenticateAsync = async (email, hashedPassword) => {
+    console.info(`Authenticates user with username ${email}`);
 
-    console.info(`Authenticates user with username ${username}`);
-
-    const user = await UsersRepository.getByUsernameWithRoleAsync(username);
+    const user = await UsersRepository.getByUsernameWithRoleAsync(email);
     
     if (!user) {
-        throw new ServerError(`Utilizatorul cu username ${username} nu exista in sistem!`, 404);
+        throw new ServerError(`Utilizatorul cu username ${email} nu exista in sistem!`, 404);
     }
      
     bcrypt.compare(hashedPassword, user.password).then(function(result) {
@@ -26,7 +25,7 @@ const authenticateAsync = async (username, hashedPassword) => {
 
     const payload = new JwtPayloadDto(user.id, user.role);
     const token = await MyJwt.generateTokenAsync(payload);
-    const authenticatedUserDto = new AuthenticatedUserDto(token, user.username, user.role);
+    const authenticatedUserDto = new AuthenticatedUserDto(token, user.email, user.role);
     
     return authenticatedUserDto;
 };
@@ -43,7 +42,35 @@ const makeCode = async (length) => {
     return result.join('');
 }
 
+const sendMail = async (email, activationCode) => {
+    const nodemailer = require('nodemailer');
+
+    const transporter = nodemailer.createTransport({
+        service: process.env.MAIL_SERVICE,
+        auth: {
+            user: process.env.MAIL_USER,
+            pass: process.env.MAIL_PASSWORD
+        }
+    });
+
+    const mailOptions = {
+        from: process.env.MAIL_USER,
+        to: email,
+        subject: 'Înregistrare ROVACCINARE',
+        text: 'Bună ziua! Vă puteți activa contul urmărind acest link: http://localhost:3005/users/activate/' + activationCode
+    };
+
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+            console.log(error);
+        } else {
+            console.info('Email sent: ' + info.response);
+        }
+    });
+}
+
 const registerAsync = async (email, plainTextPassword, last_name, first_name, cnp, address, role) => {
+    console.info(`Registers user with username ${email}`);
     const salt = await bcrypt.genSalt(10);
     const encryptedPasword = await bcrypt.hash(plainTextPassword, salt);
     const roles = await RolesRepository.getAllAsync();
@@ -67,11 +94,34 @@ const registerAsync = async (email, plainTextPassword, last_name, first_name, cn
     
     const user = await UsersRepository.addAsync(email, encryptedPasword, last_name, first_name, cnp, address, role_id, activationCode.id);
     const registeredUser = new RegisteredUserDto(user.id, user.email, user.role_id);
+    sendMail(email, code);
     
     return registeredUser;
 };
 
+const activateAsync = async(code) => {
+    console.info(`Activates user with code ${code}`);
+
+    const activationCode = await ActivationCodesRepository.getByCodeAsync(code);
+    if(!activationCode) {
+        throw new ServerError(`Codul de activare ${code} nu exista in sistem!`, 404);
+    }
+    
+    const user = await UsersRepository.getByActivationCodeIdAsync(activationCode.id);
+    if (!user) {
+        throw new ServerError(`Utilizatorul cu activation code id ${activationCode.id} nu exista in sistem!`, 404);
+    }
+    
+    if(new Date(activationCode.expiration) < new Date()) {
+        throw new ServerError(`Codul de activare a expirat!`, 410);
+    }
+    
+    UsersRepository.updateActivatedAsync(user.id, true);
+    return "success";
+};
+
 module.exports = {
     authenticateAsync,
-    registerAsync
+    registerAsync,
+    activateAsync
 }

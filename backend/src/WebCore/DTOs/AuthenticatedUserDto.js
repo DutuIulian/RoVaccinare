@@ -1,17 +1,17 @@
 class AuthenticatedUserDto {
-    constructor (token, username, role) {
+    constructor (token, email, role) {
         this.token = token;
-		this.username = username;
+        this.email = email;
         this.role = role;
     }
 
     get Token() {
         return this.token;
     }
-	
-	get Username() {
-		return this.username;
-	}
+    
+    get Email() {
+        return this.email;
+    }
 
     get Role() {
         return this.role;

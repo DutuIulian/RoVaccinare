@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS users (
     first_name varchar NOT NULL,
     cnp varchar NOT NULL,
     address varchar NOT NULL,
+    activated boolean DEFAULT false,
     role_id integer REFERENCES roles(id),
     activation_code_id integer REFERENCES activation_codes(id)
 );
@@ -24,5 +25,5 @@ CREATE TABLE IF NOT EXISTS users (
 INSERT INTO roles (value) VALUES ('ADMIN');
 INSERT INTO roles (value) VALUES ('SUPPORT');
 INSERT INTO roles (value) VALUES ('USER');
-INSERT INTO users (email, password, last_name, first_name, cnp, address, role_id)
-    VALUES ('admin@localhost', '$2y$10$BLMZFAnCPXX0cVRmdPP3Meu3NR/xWucAyQ4aAW2z57RlLdLPvH0Hi', 'Admin', '', '', '', 1);
+INSERT INTO users (email, password, last_name, first_name, cnp, address, activated, role_id)
+    VALUES ('admin@localhost', '$2y$10$BLMZFAnCPXX0cVRmdPP3Meu3NR/xWucAyQ4aAW2z57RlLdLPvH0Hi', 'Admin', '', '', '', true, 1);

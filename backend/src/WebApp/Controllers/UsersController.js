@@ -32,7 +32,6 @@ Router.post('/register', async (req, res) => {
 });
 
 Router.post('/login', async (req, res) => {
-
     const userBody = new UserBody(req.body);
     const userDto = await UsersManager.authenticateAsync(userBody.Username, userBody.Password);
     const user = new UserLoginResponse(userDto.Token, userDto.Role);
@@ -40,8 +39,21 @@ Router.post('/login', async (req, res) => {
     ResponseFilter.setResponseDetails(res, 200, user);
 });
 
-Router.get('/', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.authorizeRoles('ADMIN'), async (req, res) => {
+Router.put('/activate/:code', async (req, res) => {
+    let {
+        code
+    } = req.params;
 
+    const result = await UsersManager.activateAsync(code);
+
+    if(result.localeCompare("success") === 0) {
+        ResponseFilter.setResponseDetails(res, 200, result);
+    } else {
+        ResponseFilter.setResponseDetails(res, 400, result);
+    }
+});
+
+Router.get('/', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.authorizeRoles('ADMIN'), async (req, res) => {
     const users = await UsersRepository.getAllAsync();
 
     ResponseFilter.setResponseDetails(res, 200, users.map(user => new UserRegisterResponse(user)));
