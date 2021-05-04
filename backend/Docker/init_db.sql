@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS roles (
 CREATE TABLE IF NOT EXISTS activation_codes (
     id serial PRIMARY KEY,
     code varchar NOT NULL UNIQUE,
-    expiration timestamp NOT NULL
+    expiration timestamp NOT NULL,
+    used boolean DEFAULT false
 );
 
 CREATE TABLE IF NOT EXISTS users (

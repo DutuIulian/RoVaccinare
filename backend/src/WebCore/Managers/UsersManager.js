@@ -88,9 +88,18 @@ const registerAsync = async (email, plainTextPassword, last_name, first_name, cn
         throw new ServerError(`Invalid user role!`, 400);
     }
     
-    const code = await makeCode(16);
     const expiration = new Date(Date.now() + 15 * 60000);
-    const activationCode = await ActivationCodesRepository.addAsync(code, expiration);
+    let activationCode = {};
+    let code = '';
+    do {
+        code = await makeCode(16);
+        try {
+            activationCode = await ActivationCodesRepository.addAsync(code, expiration);
+            break;
+        } catch(err) {
+            console.log(err);
+        }
+    } while(true);
     
     const user = await UsersRepository.addAsync(email, encryptedPasword, last_name, first_name, cnp, address, role_id, activationCode.id);
     const registeredUser = new RegisteredUserDto(user.id, user.email, user.role_id);
@@ -112,11 +121,16 @@ const activateAsync = async(code) => {
         throw new ServerError(`Utilizatorul cu activation code id ${activationCode.id} nu exista in sistem!`, 404);
     }
     
+    if(activationCode.used) {
+        throw new ServerError(`Codul de activare a fost deja folosit!`, 409);
+    }
+    
     if(new Date(activationCode.expiration) < new Date()) {
         throw new ServerError(`Codul de activare a expirat!`, 410);
     }
     
     UsersRepository.updateActivatedAsync(user.id, true);
+    ActivationCodesRepository.updateUsedAsync(activationCode.id, true);
     return "success";
 };
 

@@ -23,8 +23,16 @@ const getByCodeAsync = async(code) => {
     return activation_codes[0];
 };
 
+const updateUsedAsync = async(id, used) => {
+    console.info(`Updating activation code with id ${id}`);
+    
+    const activation_codes = await queryAsync(`UPDATE activation_codes SET used = $1 WHERE id = $2`, [used, id]);
+    return activation_codes[0];
+}
+
 module.exports = {
     addAsync,
     getByIdAsync,
-    getByCodeAsync
+    getByCodeAsync,
+    updateUsedAsync
 }
