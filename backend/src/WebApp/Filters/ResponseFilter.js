@@ -1,5 +1,4 @@
 const setResponseDetails = (res, statusCode, responseObject, entityUrl = undefined) => {
-
     res.status(statusCode);
 
     console.log(responseObject);

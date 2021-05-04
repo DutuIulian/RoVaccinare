@@ -17,11 +17,14 @@ const authenticateAsync = async (email, hashedPassword) => {
         throw new ServerError(`Utilizatorul cu username ${email} nu exista in sistem!`, 404);
     }
      
-    bcrypt.compare(hashedPassword, user.password).then(function(result) {
-        if(result === false) {
-            throw new ServerError("Wrong password", 401);
-        }
-    });
+    const result = await bcrypt.compare(hashedPassword, user.password);
+    if(result === false) {
+        throw new ServerError("Wrong password", 401);
+    }
+
+    if(!user.activated) {
+        throw new ServerError("Unactivated account", 403);
+    }
 
     const payload = new JwtPayloadDto(user.id, user.role);
     const token = await MyJwt.generateTokenAsync(payload);
@@ -79,9 +82,6 @@ const registerAsync = async (email, plainTextPassword, last_name, first_name, cn
     for(let i = 0; i < roles.length; i++) {
         if(roles[i]["value"].localeCompare(role) === 0) {
             role_id = roles[i]["id"];
-            console.log(roles[i]["id"]);
-            console.log(roles[i]["value"]);
-            console.log('jeje0');
         }
     }
     if("-1".localeCompare(role_id) === 0) {

@@ -2,7 +2,6 @@ const ServerError = require('./ServerError.js');
 
 class UserBody {
     constructor (body) {
-
         if (!body.email) {
             throw new ServerError("E-mail is missing", 400);
         }
@@ -73,6 +72,29 @@ class UserBody {
     }
 }
 
+class UserLoginBody{
+    constructor (body) {
+        if (!body.email) {
+            throw new ServerError("E-mail is missing", 400);
+        }
+
+        if (!body.password) {
+            throw new ServerError("Password is missing", 400);
+        }
+
+        this.email = body.email;
+        this.password = body.password;
+    }
+
+    get Email () {
+        return this.email;
+    }
+
+    get Password () {
+        return this.password;
+    }
+}
+
 class UserRegisterResponse {
     constructor(user) {
         this.email = user.email;
@@ -88,6 +110,7 @@ class UserLoginResponse {
 }
 module.exports =  {
     UserBody,
+    UserLoginBody,
     UserLoginResponse,
     UserRegisterResponse
 }

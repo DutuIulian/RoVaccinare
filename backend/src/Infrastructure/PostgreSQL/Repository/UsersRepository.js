@@ -18,12 +18,12 @@ const addAsync = async (email, password, last_name, first_name, cnp, address, ro
     return users[0];
 };
 
-const getByUsernameWithRoleAsync = async (username) => {
-    console.info(`Getting user with username ${username}`);
+const getByUsernameWithRoleAsync = async (email) => {
+    console.info(`Getting user with username ${email}`);
     
-    const users = await queryAsync(`SELECT u.id, u.password, r.value as role FROM users u 
+    const users = await queryAsync(`SELECT u.id, u.password, u.activated, r.value as role FROM users u 
                                      JOIN roles r ON r.id = u.role_id
-                                     WHERE u.username = $1`, [username]);
+                                     WHERE u.email = $1`, [email]);
     return users[0];
 };
 

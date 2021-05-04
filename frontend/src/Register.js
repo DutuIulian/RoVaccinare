@@ -55,7 +55,7 @@ class Register extends React.Component {
 				"address": this.state.fields["address"],
 				"role": "USER"
 			};
-			const url = "http://localhost:3000/api/v1/users/register";
+			const url = process.env.REACT_APP_API_URL + "/users/register";
 			
 			fetch(url, {
 				method: "POST",
@@ -126,7 +126,7 @@ class Register extends React.Component {
 									</span>
 									<input type="text" name="address" placeholder="Adresă" onChange={this.handleChange.bind(this, "address")} required />
 								</div>
-								<input class="button" type="submit" value="Înregistrare"/>
+								<input class="button" type="submit" value="Înregistrare" />
 								<span style={{color: "green", "display": "table", "margin": "0 auto"}}>{this.state.successMessage}</span>
 								<span style={{color: "red", "display": "table", "margin": "0 auto"}}>{this.state.errorMessage}</span>
 							</form>

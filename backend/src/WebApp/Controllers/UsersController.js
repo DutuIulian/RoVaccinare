@@ -7,6 +7,7 @@ const ServerError = require('../Models/ServerError.js');
 
 const {
     UserBody,
+    UserLoginBody,
     UserRegisterResponse,
     UserLoginResponse
 } = require ('../Models/Users.js');
@@ -16,7 +17,6 @@ const AuthorizationFilter = require('../Filters/AuthorizationFilter.js');
 const Router = express.Router();
 
 Router.post('/register', async (req, res) => {
-    console.log(req.body);
     const userBody = new UserBody(req.body);
 
     try {
@@ -32,8 +32,8 @@ Router.post('/register', async (req, res) => {
 });
 
 Router.post('/login', async (req, res) => {
-    const userBody = new UserBody(req.body);
-    const userDto = await UsersManager.authenticateAsync(userBody.Username, userBody.Password);
+    const userBody = new UserLoginBody(req.body);
+    const userDto = await UsersManager.authenticateAsync(userBody.Email, userBody.Password);
     const user = new UserLoginResponse(userDto.Token, userDto.Role);
 
     ResponseFilter.setResponseDetails(res, 200, user);
