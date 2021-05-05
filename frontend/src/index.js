@@ -6,15 +6,33 @@ import Register from './Register';
 import Login from './Login';
 import Logout from './Logout';
 import Activate from './Activate';
+import TestCenters from './TestCenters';
+import Tests from './Tests';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 let storedJwt = localStorage.getItem('token');
-let accountLink = '';
+let links = '';
+let routes = '';
 
 if(storedJwt) {
-	accountLink = (<Link to={'/logout'}><span>Deconectare</span></Link>);
+	links = (
+		<>
+			<Link to={'/test_centers'}><span>Testare</span></Link>
+			<Link to={'/vaccine_centers'}><span>Vaccinare</span></Link>
+			<Link to={'/logout'}><span>Deconectare</span></Link>
+		</>
+	);
+	routes = (
+		<>
+			<Route path='/test_centers/' component={TestCenters} />
+			<Route path='/tests/:id' component={Tests} />
+			<Route path='/vaccine_centers' component={TestCenters} />
+			<Route path='/logout' component={Logout} />
+		</>
+	);
 } else {
-	accountLink = (<Link to={'/login'}><span>Autentificare</span></Link>);
+	links = (<Link to={'/login'}><span>Autentificare</span></Link>);
+	routes = (<Route path='/login' component={Login} />);
 }
 
 ReactDOM.render(
@@ -22,9 +40,7 @@ ReactDOM.render(
 	<Router>
 		<div class="header-container">
 			<Link to={'/'}><span>Pagina principală</span></Link>
-			<Link to={'/'}><span>Testare</span></Link>
-			<Link to={'/'}><span>Vaccinare</span></Link>
-			{ accountLink }
+			{ links }
 		</div>
 		<div id="title">
 			<span>
@@ -33,10 +49,9 @@ ReactDOM.render(
 		</div>
 		<Switch>
 			<Route exact path='/' component={Home} />
-			<Route path='/login' component={Login} />
-			<Route path='/logout' component={Logout} />
 			<Route path='/register' component={Register} />
 			<Route path='/users/activate/:code' component={Activate} />
+			{ routes }
 		</Switch>
 	</Router>
 	<Footer />
