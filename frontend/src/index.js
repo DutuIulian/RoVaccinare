@@ -12,6 +12,7 @@ import ScheduleTest from './ScheduleTest'
 import VaccineCenters from './VaccineCenters';
 import Vaccines from './Vaccines';
 import ScheduleVaccine from './ScheduleVaccine'
+import Questions from './Questions'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 let storedJwt = localStorage.getItem('token');
@@ -22,6 +23,7 @@ if(storedJwt !== null && storedJwt.localeCompare('') !== 0) {
 		<>
 			<Link to={'/test_centers'}><span>Testare</span></Link>
 			<Link to={'/vaccine_centers'}><span>Vaccinare</span></Link>
+			<Link to={'/questions'}><span>Întrebări</span></Link>
 			<Link to={'/logout'}><span>Deconectare</span></Link>
 		</>
 	);
@@ -53,6 +55,7 @@ ReactDOM.render(
 			<Route path='/vaccine_centers/' component={VaccineCenters} />
 			<Route path='/vaccines/:id' component={Vaccines} />
 			<Route path='/schedule_vaccine/:id' component={ScheduleVaccine} />
+			<Route path='/questions' component={Questions} />
 		</Switch>
 	</Router>
 	<Footer />

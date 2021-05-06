@@ -88,7 +88,7 @@ class Register extends React.Component {
 									<span>
 										<i aria-hidden="true" class="fa fa-envelope"/>
 									</span>
-									<input type="email" name="email" placeholder="E-mail" onChange={this.handleChange.bind(this, "email")} required />
+									<input type="text" name="email" placeholder="E-mail" onChange={this.handleChange.bind(this, "email")} required />
 								</div>
 								<div class="input_field">
 									<span>

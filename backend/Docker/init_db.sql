@@ -85,6 +85,16 @@ CREATE TABLE IF NOT EXISTS news (
     time_posted timestamp NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS questions (
+    id serial PRIMARY KEY,
+    title varchar NOT NULL,
+    question varchar NOT NULL,
+    answer varchar DEFAULT '',
+    user_id integer REFERENCES users(id),
+    support_user_id integer DEFAULT 1 REFERENCES users(id),
+    pinned boolean DEFAULT false
+);
+
 INSERT INTO roles (value) VALUES ('ADMIN');
 INSERT INTO roles (value) VALUES ('SUPPORT');
 INSERT INTO roles (value) VALUES ('USER');
