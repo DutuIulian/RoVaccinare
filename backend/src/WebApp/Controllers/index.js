@@ -9,6 +9,7 @@ const TestAppointmentsController = require('./TestAppointmentsController.js');
 const VaccineCentersController = require('./VaccineCentersController.js');
 const VaccinesController = require('./VaccinesController.js');
 const VaccineAppointmentsController = require('./VaccineAppointmentsController.js');
+const NewsController = require('./NewsController.js');
 const JWTFilter = require('../Filters/JWTFilter.js');
 
 Router.use('/v1/roles', JWTFilter.authorizeAndExtractTokenAsync, RolesController);
@@ -20,5 +21,6 @@ Router.use('/v1/test_appointments', TestAppointmentsController);
 Router.use('/v1/vaccine_centers', VaccineCentersController);
 Router.use('/v1/vaccines', VaccinesController);
 Router.use('/v1/vaccine_appointments', VaccineAppointmentsController);
+Router.use('/v1/news', NewsController);
 
 module.exports = Router;

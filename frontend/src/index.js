@@ -17,7 +17,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 let storedJwt = localStorage.getItem('token');
 let links = '';
 
-if(storedJwt.localeCompare('') !== 0) {
+if(storedJwt !== null && storedJwt.localeCompare('') !== 0) {
 	links = (
 		<>
 			<Link to={'/test_centers'}><span>Testare</span></Link>

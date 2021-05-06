@@ -78,6 +78,13 @@ CREATE TABLE IF NOT EXISTS vaccine_appointments (
     user_id integer REFERENCES users(id)
 );
 
+CREATE TABLE IF NOT EXISTS news (
+    id serial PRIMARY KEY,
+    title varchar NOT NULL,
+    content varchar NOT NULL,
+    time_posted timestamp NOT NULL
+);
+
 INSERT INTO roles (value) VALUES ('ADMIN');
 INSERT INTO roles (value) VALUES ('SUPPORT');
 INSERT INTO roles (value) VALUES ('USER');

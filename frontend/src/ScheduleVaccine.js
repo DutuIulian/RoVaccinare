@@ -10,7 +10,7 @@ class ScheduleVaccine extends React.Component {
 		super(props);
 
 		this.storedJwt = localStorage.getItem('token');
-		if(this.storedJwt.localeCompare('') === 0) {
+		if(this.storedJwt === null || this.storedJwt.localeCompare('') === 0) {
 			const history = this.props.history;
 			history.push("/login");
 		}
