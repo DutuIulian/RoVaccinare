@@ -48,6 +48,14 @@ CREATE TABLE IF NOT EXISTS tests (
     center_id integer REFERENCES test_centers(id)
 );
 
+CREATE TABLE IF NOT EXISTS test_appointments (
+    id serial PRIMARY KEY,
+    date_time timestamp NOT NULL,
+    status VARCHAR DEFAULT 'Programat',
+    test_id integer REFERENCES tests(id),
+    user_id integer REFERENCES users(id)
+);
+
 INSERT INTO roles (value) VALUES ('ADMIN');
 INSERT INTO roles (value) VALUES ('SUPPORT');
 INSERT INTO roles (value) VALUES ('USER');

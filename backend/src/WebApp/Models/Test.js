@@ -19,12 +19,16 @@ class TestPostBody {
         }
     }
 
-    get FirstName () {
-        return this.firstName;
+    get Name () {
+        return this.name;
     }
 
-    get LastName () {
-        return this.lastName;
+    get AvailableQuantity () {
+        return this.available_quantity;
+    }
+
+    get CenterId () {
+        return this.center_id;
     }
 }
 
@@ -47,7 +51,6 @@ class TestResponse {
     constructor(test) {
         this.name = test.name;
         this.available_quantity = test.available_quantity;
-        this.center = test.center;
         this.id = test.id;
     }
 }

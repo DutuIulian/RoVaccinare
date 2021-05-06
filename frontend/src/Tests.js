@@ -7,11 +7,16 @@ class Tests extends React.Component {
         super(props);
 
         this.storedJwt = localStorage.getItem('token');
+        if(this.storedJwt.localeCompare('') === 0) {
+            const history = this.props.history;
+            history.push("/login");
+        }
+
         this.state = {
             test_list: <tbody><tr><td>Lista se încarcă...</td></tr></tbody>
         }
     }
-    
+
     componentDidMount() {
         const id = this.props.match.params.id;
         this.fetchData(id);
@@ -50,15 +55,17 @@ class Tests extends React.Component {
                 this.setState({test_list: this.buildTbodyFromString('Nu există niciun test disponibil.')});
             } else {
                 response.forEach((test) => {
-                    content.push(
-                        <tr>
-                            <td>{test.name}</td>
-                            <td>{test.available_quantity}</td>
-                            <td>
-                                <Link to={'/schedule_test/' + test.id}><span>Programează-te</span></Link>
-                            </td>
-                        </tr>
-                    );
+                    if(test.available_quantity > 0) {
+                        content.push(
+                            <tr>
+                                <td>{test.name}</td>
+                                <td>{test.available_quantity}</td>
+                                <td>
+                                    <Link to={'/schedule_test/' + test.id}><span>Programează-te</span></Link>
+                                </td>
+                            </tr>
+                        );
+                    }
                 });
                 this.setState({test_list: (
                     <>

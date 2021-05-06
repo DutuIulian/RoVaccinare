@@ -7,7 +7,7 @@ class Login extends React.Component {
 		super(props);
 
 		const storedJwt = localStorage.getItem('token');
-		if(storedJwt) {
+		if(storedJwt.localeCompare('') !== 0) {
 			const history = this.props.history;
 			history.push("/");
 		}

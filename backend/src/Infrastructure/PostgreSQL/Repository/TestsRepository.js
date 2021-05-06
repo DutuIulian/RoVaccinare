@@ -29,8 +29,18 @@ const getAllByCenterIdAsync = async(center_id) => {
     return await queryAsync(`SELECT * FROM tests WHERE center_id=$1`, [center_id]);
 };
 
+const increaseQuantityById = async(id, extra_quantity) => {
+    console.info(`Increasing quantity for test with id ${id}`);
+
+    return await queryAsync(
+        `UPDATE tests SET available_quantity=available_quantity+$1 WHERE id=$2`,
+        [extra_quantity, id]
+    );
+};
+
 module.exports = {
     addAsync,
     updateAsync,
-    getAllByCenterIdAsync
+    getAllByCenterIdAsync,
+    increaseQuantityById
 }

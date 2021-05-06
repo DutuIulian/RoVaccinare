@@ -5,6 +5,7 @@ const ActivationCodesController = require('./ActivationCodesController.js');
 const UsersController = require('./UsersController.js');
 const TestCentersController = require('./TestCentersController.js');
 const TestsController = require('./TestsController.js');
+const TestAppointmentsController = require('./TestAppointmentsController.js');
 const JWTFilter = require('../Filters/JWTFilter.js');
 
 Router.use('/v1/roles', JWTFilter.authorizeAndExtractTokenAsync, RolesController);
@@ -12,5 +13,6 @@ Router.use('/v1/activation_codes', JWTFilter.authorizeAndExtractTokenAsync, Acti
 Router.use('/v1/users', UsersController);
 Router.use('/v1/test_centers', TestCentersController);
 Router.use('/v1/tests', TestsController);
+Router.use('/v1/test_appointments', TestAppointmentsController);
 
 module.exports = Router;

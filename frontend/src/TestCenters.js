@@ -7,6 +7,11 @@ class TestCenters extends React.Component {
 		super(props);
 
 		this.storedJwt = localStorage.getItem('token');
+		if(this.storedJwt.localeCompare('') === 0) {
+			const history = this.props.history;
+			history.push("/login");
+		}
+
 		this.state = {
 			center_list: <tbody><tr><td>Lista se încarcă...</td></tr></tbody>,
 		}

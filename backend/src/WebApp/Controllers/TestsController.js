@@ -20,7 +20,7 @@ Router.post('/', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.au
     ResponseFilter.setResponseDetails(res, 201, new TestResponse(test), req.originalUrl);
 });
 
-Router.put('/', JWTFilter.authorizeAndExtractTokenAsync,  AuthorizationFilter.authorizeRoles('ADMIN'), async (req, res) => {
+Router.put('/', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.authorizeRoles('ADMIN'), async (req, res) => {
     const testBody = new TestPutBody(req.body);
     await TestsRepository.updateAsync(testBody.id, testBody.name, testBody.available_quantity, testBody.center_id);
 });

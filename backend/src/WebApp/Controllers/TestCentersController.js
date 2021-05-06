@@ -20,7 +20,7 @@ Router.post('/', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.au
     ResponseFilter.setResponseDetails(res, 201, new TestCenterResponse(testCenter), req.originalUrl);
 });
 
-Router.put('/', JWTFilter.authorizeAndExtractTokenAsync,  AuthorizationFilter.authorizeRoles('ADMIN'), async (req, res) => {
+Router.put('/', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.authorizeRoles('ADMIN'), async (req, res) => {
     const testCenterBody = new TestCenterPutBody(req.body);
     await TestCentersRepository.updateAsync(testCenterBody.id, testCenterBody.name, testCenterBody.address, testCenterBody.locality_id);
 });
