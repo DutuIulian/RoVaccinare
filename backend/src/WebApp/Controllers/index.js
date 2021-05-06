@@ -6,6 +6,9 @@ const UsersController = require('./UsersController.js');
 const TestCentersController = require('./TestCentersController.js');
 const TestsController = require('./TestsController.js');
 const TestAppointmentsController = require('./TestAppointmentsController.js');
+const VaccineCentersController = require('./VaccineCentersController.js');
+const VaccinesController = require('./VaccinesController.js');
+const VaccineAppointmentsController = require('./VaccineAppointmentsController.js');
 const JWTFilter = require('../Filters/JWTFilter.js');
 
 Router.use('/v1/roles', JWTFilter.authorizeAndExtractTokenAsync, RolesController);
@@ -14,5 +17,8 @@ Router.use('/v1/users', UsersController);
 Router.use('/v1/test_centers', TestCentersController);
 Router.use('/v1/tests', TestsController);
 Router.use('/v1/test_appointments', TestAppointmentsController);
+Router.use('/v1/vaccine_centers', VaccineCentersController);
+Router.use('/v1/vaccines', VaccinesController);
+Router.use('/v1/vaccine_appointments', VaccineAppointmentsController);
 
 module.exports = Router;

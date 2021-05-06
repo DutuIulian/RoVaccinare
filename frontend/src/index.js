@@ -9,6 +9,9 @@ import Activate from './Activate';
 import TestCenters from './TestCenters';
 import Tests from './Tests';
 import ScheduleTest from './ScheduleTest'
+import VaccineCenters from './VaccineCenters';
+import Vaccines from './Vaccines';
+import ScheduleVaccine from './ScheduleVaccine'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 let storedJwt = localStorage.getItem('token');
@@ -47,7 +50,9 @@ ReactDOM.render(
 			<Route path='/test_centers/' component={TestCenters} />
 			<Route path='/tests/:id' component={Tests} />
 			<Route path='/schedule_test/:id' component={ScheduleTest} />
-			<Route path='/vaccine_centers' component={TestCenters} />
+			<Route path='/vaccine_centers/' component={VaccineCenters} />
+			<Route path='/vaccines/:id' component={Vaccines} />
+			<Route path='/schedule_vaccine/:id' component={ScheduleVaccine} />
 		</Switch>
 	</Router>
 	<Footer />

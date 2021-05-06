@@ -5,7 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import './register.scss';
 import "./customDatePickerWidth.scss";
 
-class ScheduleTest extends React.Component {
+class ScheduleVaccine extends React.Component {
 	constructor(props){
 		super(props);
 
@@ -15,7 +15,7 @@ class ScheduleTest extends React.Component {
 			history.push("/login");
 		}
 
-		this.test_id = this.props.match.params.id;
+		this.vaccine_id = this.props.match.params.id;
 
 		this.state = {
 			successMessage: "",
@@ -66,9 +66,9 @@ class ScheduleTest extends React.Component {
 
 		const data = {
 			"date_time": this.state.date,
-			"test_id": this.test_id
+			"vaccine_id": this.vaccine_id
 		};
-		const url = process.env.REACT_APP_API_URL + "/test_appointments";
+		const url = process.env.REACT_APP_API_URL + "/vaccine_appointments";
 
 		fetch(url, {
 			method: "POST",
@@ -102,4 +102,4 @@ class ScheduleTest extends React.Component {
 	}
 }
 
-export default ScheduleTest;
+export default ScheduleVaccine;

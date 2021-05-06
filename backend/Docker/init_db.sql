@@ -56,6 +56,28 @@ CREATE TABLE IF NOT EXISTS test_appointments (
     user_id integer REFERENCES users(id)
 );
 
+CREATE TABLE IF NOT EXISTS vaccine_centers (
+    id serial PRIMARY KEY,
+    name varchar NOT NULL,
+    address varchar NOT NULL,
+    locality_id integer REFERENCES localities(id)
+);
+
+CREATE TABLE IF NOT EXISTS vaccines (
+    id serial PRIMARY KEY,
+    name varchar NOT NULL,
+    available_quantity integer DEFAULT 0,
+    center_id integer REFERENCES vaccine_centers(id)
+);
+
+CREATE TABLE IF NOT EXISTS vaccine_appointments (
+    id serial PRIMARY KEY,
+    date_time timestamp NOT NULL,
+    status VARCHAR DEFAULT 'Programat',
+    vaccine_id integer REFERENCES vaccines(id),
+    user_id integer REFERENCES users(id)
+);
+
 INSERT INTO roles (value) VALUES ('ADMIN');
 INSERT INTO roles (value) VALUES ('SUPPORT');
 INSERT INTO roles (value) VALUES ('USER');
