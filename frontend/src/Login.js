@@ -70,7 +70,7 @@ class Login extends React.Component {
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(data)
 		})
-		.then(response => response.json().then(json => this.handleResponse(response.status, json.response.token))) 
+		.then(response => response.json().then(json => this.handleResponse(response.status, json.response.token, json.response.id))) 
 		.catch(error => this.handleError());
 	}
 
@@ -80,9 +80,10 @@ class Login extends React.Component {
 		this.setState({fields});
 	}
 
-	handleResponse(status, token) {
+	handleResponse(status, token, user_id) {
 		if(Math.floor(status / 100) === 2) {
 			localStorage.setItem('token', token);
+			localStorage.setItem('id', user_id);
 			const history = this.props.history;
 			history.push("/");
 			window.location.reload();

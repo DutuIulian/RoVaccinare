@@ -103,9 +103,10 @@ class UserRegisterResponse {
     }
 }
 class UserLoginResponse {
-    constructor(token, role) {
+    constructor(token, role, id) {
         this.role = role;
         this.token = token;
+        this.id = id;
     }
 }
 module.exports =  {

@@ -19,6 +19,13 @@ class Questions extends React.Component {
 					<tr><td></td></tr>
 				</tbody>
 			),
+			user_questions_list: (
+				<tbody>
+					<tr><td></td></tr>
+					<tr><td></td></tr>
+					<tr><td></td></tr>
+				</tbody>
+			),
 			fields: {},
 			successMessage: "",
 			errorMessage: ""
@@ -26,24 +33,41 @@ class Questions extends React.Component {
 	}
 
 	componentDidMount() {
-		const url = process.env.REACT_APP_API_URL + "/questions/pinned";
+		const otherUsersQuestionsUrl = process.env.REACT_APP_API_URL + "/questions/pinned";
 
-		fetch(url, {
+		fetch(otherUsersQuestionsUrl, {
 			method: "GET",
 			mode: "cors",
 			headers: {
 				Authorization: "Bearer " + this.storedJwt
 			}
 		})
-		.then(response => response.json().then(json => this.handleGetResponse(response.status, json.response)))
-		.catch(error => this.handleError());
+		.then(response => response.json().then(json => this.handleGetResponse(response.status, json.response, 'questions_list')))
+		.catch(error => this.handleGetError('questions_list'));
+
+		const user_id = localStorage.getItem('id');
+		const userQuestionsUrl = process.env.REACT_APP_API_URL + "/questions/user/" + user_id;
+
+		fetch(userQuestionsUrl, {
+			method: "GET",
+			mode: "cors",
+			headers: {
+				Authorization: "Bearer " + this.storedJwt
+			}
+		})
+		.then(response => response.json().then(json => this.handleGetResponse(response.status, json.response, 'user_questions_list')))
+		.catch(error => this.handleGetError('user_questions_list'));
 	}
 
 	render() {
 		return (
 			<>
 				<table class="news">
+					<tbody><tr className="title_table_row"><td>Întrebările altora</td></tr></tbody>
 					{this.state.questions_list}
+					<tr><td> </td></tr>
+					<tbody><tr className="title_table_row"><td>Întrebările tale</td></tr></tbody>
+					{this.state.user_questions_list}
 				</table>
 				<div class="form_wrapper">
 					<div class="form_container">
@@ -101,31 +125,36 @@ class Questions extends React.Component {
 			body: JSON.stringify(data)
 		})
 		.then(response => response.json().then(json => this.handlePostResponse(response.status, json.response.token))) 
-		.catch(error => this.handleError());
+		.catch(error => this.handlePostError());
 	}
 
-	handleGetResponse(status, response) {
+	handleGetResponse(status, response, key) {
 		let content = [];
 
 		if(Math.floor(status / 100) === 2) {
 			if(!response || !response.length) {
-				this.setState({questions_list: this.buildTbodyFromString('Nu există întrebări.')});
+				this.setState({[key]: this.buildTbodyFromString('Nu există întrebări.')});
 			} else {
 				response.reverse();
 				response.forEach((question) => {
-					content.push(<tr><td>{question.title}</td></tr>);
-					content.push(<tr><td>{question.question}</td></tr>);
-					content.push(<tr><td>{question.answer}</td></tr>);
+					content.push(<tr className="regular_table_row"><td>{question.title}</td></tr>);
+					content.push(<tr className="regular_table_row"><td>{question.question}</td></tr>);
+					content.push(<tr className="regular_table_row"><td>{question.answer}</td></tr>);
+					content.push(<tr className="regular_table_row"><td><hr /></td></tr>);
 				});
-				this.setState({questions_list: (
+				this.setState({[key]: (
 					<tbody>
 						{content}
 					</tbody>
 				)});
 			}
 		} else {
-			this.setState({questions_list: this.buildTbodyFromString("A apărut o eroare!")});
+			this.setState({[key]: this.buildTbodyFromString("A apărut o eroare!")});
 		}
+	}
+
+	handleGetError(key) {
+		this.setState({[key]: this.buildTbodyFromString("A apărut o eroare!")});
 	}
 
 	buildTbodyFromString(text) {
@@ -144,7 +173,7 @@ class Questions extends React.Component {
 		}
 	}
 
-	handleError() {
+	handlePostError() {
 		this.setState({errorMessage: "A apărut o eroare!"});
 		this.setState({successMessage: ""});
 	}

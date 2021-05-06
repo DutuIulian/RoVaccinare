@@ -28,7 +28,7 @@ const authenticateAsync = async (email, hashedPassword) => {
 
     const payload = new JwtPayloadDto(user.id, user.role);
     const token = await MyJwt.generateTokenAsync(payload);
-    const authenticatedUserDto = new AuthenticatedUserDto(token, user.email, user.role);
+    const authenticatedUserDto = new AuthenticatedUserDto(token, user.email, user.role, user.id);
     
     return authenticatedUserDto;
 };

@@ -1,8 +1,9 @@
 class AuthenticatedUserDto {
-    constructor (token, email, role) {
+    constructor (token, email, role, id) {
         this.token = token;
         this.email = email;
         this.role = role;
+        this.id = id;
     }
 
     get Token() {
@@ -15,6 +16,10 @@ class AuthenticatedUserDto {
 
     get Role() {
         return this.role;
+    }
+
+    get Id() {
+        return this.id;
     }
 }
 

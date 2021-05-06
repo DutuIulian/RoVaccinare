@@ -45,9 +45,26 @@ const getAllPinnedAsync = async() => {
     return questions;
 };
 
+const getAllByUserIdAsync = async(user_id) => {
+    console.info(`Getting all pinned questions`);
+
+    const questions = await queryAsync(
+        `SELECT q.title, q.question, q.answer,
+                CONCAT(u1.last_name, ' ', u1.first_name) AS user_name,
+                CONCAT(u2.last_name, ' ', u2.first_name) AS support_user_name
+            FROM questions q
+            JOIN users u1 ON q.user_id=u1.id
+            JOIN users u2 ON q.support_user_id=u2.id
+            WHERE q.user_id=$1`,
+            [user_id]
+    );
+    return questions;
+};
+
 module.exports = {
     addAsync,
     updateAsync,
     getByIdAsync,
-    getAllPinnedAsync
+    getAllPinnedAsync,
+    getAllByUserIdAsync
 }

@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 
 function Logout() {
 	localStorage.setItem('token', '');
+	localStorage.setItem('id', -1);
 	const history = useHistory();
 	history.push("/");
 	window.location.reload();

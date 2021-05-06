@@ -44,9 +44,9 @@ class Home extends React.Component {
 			} else {
 				response.reverse();
 				response.forEach((news) => {
-					content.push(<tr><td>{news.title}</td></tr>);
-					content.push(<tr><td>{news.time_posted}</td></tr>);
-					content.push(<tr><td>{news.content}</td></tr>);
+					content.push(<tr className="bold_table_row"><td>{news.title}</td></tr>);
+					content.push(<tr className="regular_table_row"><td>{news.time_posted}</td></tr>);
+					content.push(<tr className="regular_table_row"><td>{news.content}</td></tr>);
 				});
 				this.setState({news_list: (
 					<tbody>

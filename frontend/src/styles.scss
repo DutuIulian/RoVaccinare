@@ -53,16 +53,16 @@
 	padding: 7px;
 }
 
-.news tr:nth-child(3n+1) {
+.bold_table_row {
 	font-size: 22px;
 	font-weight: bold;
 }
 
-.news tr:nth-child(3n+2) {
-	font-size: 17px;
+.title_table_row {
+	font-size: 20px;
 }
 
-.news tr:nth-child(3n+3) {
+.regular_table_row {
 	font-size: 17px;
 }
 

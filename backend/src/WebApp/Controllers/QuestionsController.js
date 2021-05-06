@@ -27,7 +27,7 @@ Router.put('/', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.aut
 
 Router.get('/pinned', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.authorizeRoles('ADMIN', 'SUPPORT', 'USER'), async (req, res) => {
     const questions = await QuestionsRepository.getAllPinnedAsync();
-    ResponseFilter.setResponseDetails(res, 200, questions.map(questions => new QuestionResponse(questions)));
+    ResponseFilter.setResponseDetails(res, 200, questions.map(question => new QuestionResponse(question)));
 });
 
 Router.get('/:id', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.authorizeRoles('ADMIN', 'SUPPORT'), async (req, res) => {
@@ -37,6 +37,15 @@ Router.get('/:id', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.
 
     const question = await QuestionsRepository.getByIdAsync(id);
     ResponseFilter.setResponseDetails(res, 200, new QuestionResponse(question));
+});
+
+Router.get('/user/:user_id', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.authorizeRoles('ADMIN', 'SUPPORT', 'USER'), async (req, res) => {
+    let {
+        user_id
+    } = req.params;
+
+    const questions = await QuestionsRepository.getAllByUserIdAsync(user_id);
+    ResponseFilter.setResponseDetails(res, 200, questions.map(question => new QuestionResponse(question)));
 });
 
 module.exports = Router;

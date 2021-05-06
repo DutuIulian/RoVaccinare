@@ -34,7 +34,7 @@ Router.post('/register', async (req, res) => {
 Router.post('/login', async (req, res) => {
     const userBody = new UserLoginBody(req.body);
     const userDto = await UsersManager.authenticateAsync(userBody.Email, userBody.Password);
-    const user = new UserLoginResponse(userDto.Token, userDto.Role);
+    const user = new UserLoginResponse(userDto.Token, userDto.Role, userDto.Id);
 
     ResponseFilter.setResponseDetails(res, 200, user);
 });
