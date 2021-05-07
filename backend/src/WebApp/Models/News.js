@@ -4,7 +4,6 @@ class NewsPostBody {
     constructor (body) {
         this.title = body.title;
         this.content = body.content;
-        this.time_posted = body.time_posted;
 
         if (this.title == null || this.title.length < 4) {
             throw new ServerError("Title is missing", 400);
@@ -12,10 +11,6 @@ class NewsPostBody {
 
         if (this.content == null || this.content.length < 4) {
             throw new ServerError("Content is missing", 400);
-        }
-
-        if (this.time_posted == null) {
-            throw new ServerError("Time posted is missing", 400);
         }
     }
 
@@ -26,16 +21,12 @@ class NewsPostBody {
     get Content () {
         return this.content;
     }
-
-    get TimePosted () {
-        return this.time_posted;
-    }
 }
 
 class NewsPutBody extends NewsPostBody {
-    constructor (body, id) {
+    constructor (body) {
         super(body);
-        this.id = parseInt(id);
+        this.id = body.id;
 
         if (!this.id || this.id < 1) {
             throw new ServerError("Id should be a positive integer", 400);

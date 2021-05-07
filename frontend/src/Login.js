@@ -70,8 +70,8 @@ class Login extends React.Component {
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(data)
 		})
-		.then(response => response.json().then(json => this.handleResponse(response.status, json.response.token, json.response.id))) 
-		.catch(error => this.handleError());
+		.then(response => this.handleResponse(response)) 
+		.catch(error => console.log(error));
 	}
 
 	handleChange(field, e){			
@@ -80,16 +80,20 @@ class Login extends React.Component {
 		this.setState({fields});
 	}
 
-	handleResponse(status, token, user_id) {
-		if(Math.floor(status / 100) === 2) {
-			localStorage.setItem('token', token);
-			localStorage.setItem('id', user_id);
+	handleResponse(response) {
+		if(Math.floor(response.status / 100) === 2) {
+			response.json().then(json => {
+				localStorage.setItem('token', json.response.token);
+				localStorage.setItem('role', json.response.role);
+				localStorage.setItem('id', json.response.id);
+			});
+			
 			const history = this.props.history;
 			history.push("/");
 			window.location.reload();
-		} else if(status === 401){
+		} else if(response.status === 401){
 			this.setState({errorMessage: 'Contul sau parola sunt greșite!'});
-		} else if(status === 403){
+		} else if(response.status === 403){
 			this.setState({errorMessage: 'Contul nu este activat!'});
 		} else {
 			this.setState({errorMessage: 'A apărut o eroare!'});

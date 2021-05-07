@@ -45,7 +45,7 @@
 	border-radius: 10px;
 	box-shadow: 6px 3px 6px 3px rgba(0, 0, 0, .16);
 	border-collapse: separate;
-	padding: 4vw;
+	padding: 2vw;
 	text-align: justify;
 }
 
@@ -77,4 +77,32 @@
 	
 	font-family: FuturaPT;
 	font-weight: bold;
+}
+
+$blue:#0020C2;
+$grey:#cccccc;
+[type="submit"] {
+	background: $blue;
+	height: 35px;
+	line-height: 35px;
+	width: 200px;
+	display: block;
+	margin-left: auto;
+	margin-right: 0;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	color: #fff;
+	font-size: 1.1em;
+	margin-bottom: 10px;
+	-webkit-transition: all 0.30s ease-in-out;
+	-moz-transition: all 0.30s ease-in-out;
+	-ms-transition: all 0.30s ease-in-out;
+	transition: all 0.30s ease-in-out;
+	&:hover {
+		background: darken($blue,7%);
+	}
+	&:focus {
+		background: darken($blue,7%);
+	}
 }

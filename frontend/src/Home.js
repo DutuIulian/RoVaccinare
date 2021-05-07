@@ -1,10 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './styles.scss';
 
 class Home extends React.Component {
 	constructor(props) {
 		super(props);
 
+		this.role = localStorage.getItem('role');
 		this.state = {
 			news_list: (
 				<tbody>
@@ -28,11 +30,20 @@ class Home extends React.Component {
 	}
 
 	render() {
-		return (
-			<table class="news">
-				{this.state.news_list}
-			</table>
-		);
+		if('ADMIN'.localeCompare(localStorage.getItem('role')) === 0) {
+			return (
+				<table class="news">
+					<tr><td><Link to={'/add_news'}><input class="button" type="submit" value="Adaugă" /></Link></td></tr>
+					{this.state.news_list}
+				</table>
+			);
+		} else {
+			return (
+				<table class="news">
+					{this.state.news_list}
+				</table>
+			);
+		}
 	}
 
 	handleResponse(status, response) {
@@ -46,6 +57,9 @@ class Home extends React.Component {
 					content.push(<tr className="bold_table_row"><td>{news.title}</td></tr>);
 					content.push(<tr className="regular_table_row"><td>{news.time_posted}</td></tr>);
 					content.push(<tr className="regular_table_row"><td>{news.content}</td></tr>);
+					if("ADMIN".localeCompare(this.role) === 0) {
+						content.push(<tr className="regular_table_row"><td><Link to={"/edit_news/" + news.id}><span>Editează</span></Link></td></tr>);
+					}
 					content.push(<tr className="regular_table_row"><td><hr /></td></tr>);
 				});
 				this.setState({news_list: (

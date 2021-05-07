@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS news (
     id serial PRIMARY KEY,
     title varchar NOT NULL,
     content varchar NOT NULL,
-    time_posted timestamptz NOT NULL
+	time_posted timestamptz DEFAULT NOW()
 );
 
 CREATE TABLE IF NOT EXISTS questions (
