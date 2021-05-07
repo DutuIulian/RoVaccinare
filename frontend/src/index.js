@@ -9,6 +9,7 @@ import Activate from './Activate';
 import TestCenters from './TestCenters';
 import Tests from './Tests';
 import ScheduleTest from './ScheduleTest'
+import TestCenterReviews from './TestCenterReviews'
 import VaccineCenters from './VaccineCenters';
 import Vaccines from './Vaccines';
 import ScheduleVaccine from './ScheduleVaccine'
@@ -52,6 +53,7 @@ ReactDOM.render(
 			<Route path='/test_centers/' component={TestCenters} />
 			<Route path='/tests/:id' component={Tests} />
 			<Route path='/schedule_test/:id' component={ScheduleTest} />
+			<Route path='/test_center_reviews/:id' component={TestCenterReviews} />
 			<Route path='/vaccine_centers/' component={VaccineCenters} />
 			<Route path='/vaccines/:id' component={Vaccines} />
 			<Route path='/schedule_vaccine/:id' component={ScheduleVaccine} />

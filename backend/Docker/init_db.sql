@@ -95,6 +95,15 @@ CREATE TABLE IF NOT EXISTS questions (
     pinned boolean DEFAULT false
 );
 
+CREATE TABLE IF NOT EXISTS test_center_reviews (
+    id serial PRIMARY KEY,
+    title varchar NOT NULL,
+    review varchar NOT NULL,
+    date timestamp DEFAULT NOW(),
+    user_id integer REFERENCES users(id),
+    center_id integer REFERENCES test_centers(id)
+);
+
 INSERT INTO roles (value) VALUES ('ADMIN');
 INSERT INTO roles (value) VALUES ('SUPPORT');
 INSERT INTO roles (value) VALUES ('USER');

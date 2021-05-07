@@ -16,7 +16,7 @@ const Router = express.Router();
 
 Router.post('/', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.authorizeRoles('ADMIN', 'SUPPORT', 'USER'), async (req, res) => {
     const questionBody = new QuestionPostBody(req);
-    const question = await QuestionsRepository.addAsync(questionBody.title, questionBody.question);
+    const question = await QuestionsRepository.addAsync(questionBody.title, questionBody.question, questionBody.user_id);
     ResponseFilter.setResponseDetails(res, 201, new QuestionResponse(question), req.originalUrl);
 });
 

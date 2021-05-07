@@ -135,11 +135,10 @@ class Questions extends React.Component {
 			if(!response || !response.length) {
 				this.setState({[key]: this.buildTbodyFromString('Nu există întrebări.')});
 			} else {
-				response.reverse();
 				response.forEach((question) => {
 					content.push(<tr className="regular_table_row"><td>{question.title}</td></tr>);
 					content.push(<tr className="regular_table_row"><td>{question.question}</td></tr>);
-					content.push(<tr className="regular_table_row"><td>{question.answer}</td></tr>);
+					content.push(<tr className="regular_table_row"><td>{question.user_name}</td></tr>);
 					content.push(<tr className="regular_table_row"><td><hr /></td></tr>);
 				});
 				this.setState({[key]: (

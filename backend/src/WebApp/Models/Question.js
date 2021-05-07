@@ -14,8 +14,14 @@ class QuestionPostBody {
             throw new ServerError("Content is missing", 400);
         }
 
-        if (!this.id || this.id < 1) {
-            this.id = req.user.id;
+        if (!this.user_id || this.user_id < 1) {
+            this.user_id = req.user.userId;
+        }
+
+        if (this.user_id !== req.user.userId
+                && req.user.userRole.localeCompare("ADMIN") !== 0
+                && req.user.userRole.localeCompare("SUPPORT") !== 0) {
+            throw new ServerError("Only ADMIN and SUPPORT users can create appointments for other users", 401);
         }
     }
 
@@ -26,22 +32,21 @@ class QuestionPostBody {
     get Question () {
         return this.question;
     }
+
+    get UserId () {
+        return this.user_id;
+    }
 }
 
 class QuestionPutBody extends QuestionPostBody {
     constructor (req, id) {
         super(req);
         this.id = parseInt(id);
-        this.user_id = req.body.user_id;
         this.support_user_id = req.body.support_user_id;
         this.pinned = req.body.pinned;
 
         if (!this.id || this.id < 1) {
             throw new ServerError("Id should be a positive integer", 400);
-        }
-
-        if (!this.user_id || this.user_id < 1) {
-            throw new ServerError("User id should be a positive integer", 400);
         }
 
         if (!this.support_user_id || this.support_user_id < 1) {
@@ -56,6 +61,7 @@ class QuestionPutBody extends QuestionPostBody {
 
 class QuestionResponse {
     constructor(question) {
+        this.id = question.id;
         this.title = question.title;
         this.question = question.question;
         this.answer = question.answer;

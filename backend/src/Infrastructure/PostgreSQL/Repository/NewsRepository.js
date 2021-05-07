@@ -26,7 +26,7 @@ const updateAsync = async (id, title, content, time_posted) => {
 const getAllAsync = async() => {
     console.info(`Getting all news`);
 
-    return await queryAsync(`SELECT * FROM news`);
+    return await queryAsync(`SELECT * FROM news ORDER BY id DESC`);
 };
 
 module.exports = {

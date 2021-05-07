@@ -32,6 +32,10 @@ class VaccineAppointmentPostBody {
     get VaccineId () {
         return this.vaccine_id;
     }
+
+    get UserId () {
+        return this.user_id;
+    }
 }
 
 class VaccineAppointmentPutBody extends VaccineAppointmentPostBody {

@@ -2,12 +2,12 @@ const {
     queryAsync
 } = require('..');
 
-const addAsync = async (title, question) => {
+const addAsync = async (title, question, user_id) => {
     console.info(`Adding questions in database`);
 
     const questions = await queryAsync(
-        'INSERT INTO questions (title, question) VALUES ($1, $2) RETURNING *',
-        [title, question]
+        'INSERT INTO questions (title, question, user_id) VALUES ($1, $2, $3) RETURNING *',
+        [title, question, user_id]
     );
 
     return questions[0];
@@ -34,13 +34,14 @@ const getAllPinnedAsync = async() => {
     console.info(`Getting all pinned questions`);
 
     const questions = await queryAsync(
-        `SELECT q.title, q.question, q.answer,
+        `SELECT q.id, q.title, q.question, q.answer,
                 CONCAT(u1.last_name, ' ', u1.first_name) AS user_name,
                 CONCAT(u2.last_name, ' ', u2.first_name) AS support_user_name
             FROM questions q
             JOIN users u1 ON q.user_id=u1.id
             JOIN users u2 ON q.support_user_id=u2.id
-            WHERE q.pinned=true`
+            WHERE q.pinned=true
+            ORDER BY q.id DESC`
     );
     return questions;
 };
