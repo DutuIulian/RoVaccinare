@@ -13,6 +13,7 @@ import TestCenterReviews from './TestCenterReviews'
 import VaccineCenters from './VaccineCenters';
 import Vaccines from './Vaccines';
 import ScheduleVaccine from './ScheduleVaccine'
+import VaccineCenterReviews from './VaccineCenterReviews'
 import Questions from './Questions'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
@@ -57,6 +58,7 @@ ReactDOM.render(
 			<Route path='/vaccine_centers/' component={VaccineCenters} />
 			<Route path='/vaccines/:id' component={Vaccines} />
 			<Route path='/schedule_vaccine/:id' component={ScheduleVaccine} />
+			<Route path='/vaccine_center_reviews/:id' component={VaccineCenterReviews} />
 			<Route path='/questions' component={Questions} />
 		</Switch>
 	</Router>

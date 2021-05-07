@@ -58,6 +58,9 @@ class VaccineCenters extends React.Component {
 							<td>
 								<Link to={'/vaccines/' + center.id}><span>Programează-te</span></Link>
 							</td>
+							<td>
+								<Link to={'/vaccine_center_reviews/' + center.id}><span>Recenzii</span></Link>
+							</td>
 						</tr>
 					);
 				});

@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS roles (
 CREATE TABLE IF NOT EXISTS activation_codes (
     id serial PRIMARY KEY,
     code varchar NOT NULL UNIQUE,
-    expiration timestamp NOT NULL,
+    expiration timestamptz NOT NULL,
     used boolean DEFAULT false
 );
 
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS tests (
 
 CREATE TABLE IF NOT EXISTS test_appointments (
     id serial PRIMARY KEY,
-    date_time timestamp NOT NULL,
+    date_time timestamptz NOT NULL,
     status VARCHAR DEFAULT 'Programat',
     test_id integer REFERENCES tests(id),
     user_id integer REFERENCES users(id)
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS vaccines (
 
 CREATE TABLE IF NOT EXISTS vaccine_appointments (
     id serial PRIMARY KEY,
-    date_time timestamp NOT NULL,
+    date_time timestamptz NOT NULL,
     status VARCHAR DEFAULT 'Programat',
     vaccine_id integer REFERENCES vaccines(id),
     user_id integer REFERENCES users(id)
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS news (
     id serial PRIMARY KEY,
     title varchar NOT NULL,
     content varchar NOT NULL,
-    time_posted timestamp NOT NULL
+    time_posted timestamptz NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS questions (
@@ -99,9 +99,18 @@ CREATE TABLE IF NOT EXISTS test_center_reviews (
     id serial PRIMARY KEY,
     title varchar NOT NULL,
     review varchar NOT NULL,
-    date timestamp DEFAULT NOW(),
+    date timestamptz DEFAULT NOW(),
     user_id integer REFERENCES users(id),
     center_id integer REFERENCES test_centers(id)
+);
+
+CREATE TABLE IF NOT EXISTS vaccine_center_reviews (
+    id serial PRIMARY KEY,
+    title varchar NOT NULL,
+    review varchar NOT NULL,
+    date timestamptz DEFAULT NOW(),
+    user_id integer REFERENCES users(id),
+    center_id integer REFERENCES vaccine_centers(id)
 );
 
 INSERT INTO roles (value) VALUES ('ADMIN');
