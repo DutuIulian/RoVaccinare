@@ -98,6 +98,9 @@ class UserPutBody {
 
 class UserRegisterBody extends UserPutBody {
     constructor (body) {
+        body.id = 1;
+        super(body);
+
         if (!body.password) {
             throw new ServerError("Password is missing", 400);
         }

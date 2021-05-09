@@ -42,6 +42,9 @@ class AdminMenu extends React.Component {
 	render() {
 		return (
 			<table class="news">
+				<thead>
+					<tr><td><Link to={'/add_user'}><input class="button" type="submit" value="Adaugă" /></Link></td></tr>
+				</thead>
 				{this.state.news_list}
 			</table>
 		);
