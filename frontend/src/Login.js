@@ -71,7 +71,7 @@ class Login extends React.Component {
 			body: JSON.stringify(data)
 		})
 		.then(response => this.handleResponse(response)) 
-		.catch(error => console.log(error));
+		.catch(error => this.handleError());
 	}
 
 	handleChange(field, e){			

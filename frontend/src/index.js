@@ -17,20 +17,23 @@ import VaccineCenterReviews from './VaccineCenterReviews'
 import Questions from './Questions'
 import AddNews from './AddNews'
 import EditNews from './EditNews'
+import AdminMenu from './AdminMenu'
+import AdministerUser from './AdministerUser'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 let storedJwt = localStorage.getItem('token');
 let links = '';
 
 if(storedJwt !== null && storedJwt.localeCompare('') !== 0) {
-	links = (
-		<>
-			<Link to={'/test_centers'}><span>Testare</span></Link>
-			<Link to={'/vaccine_centers'}><span>Vaccinare</span></Link>
-			<Link to={'/questions'}><span>Întrebări</span></Link>
-			<Link to={'/logout'}><span>Deconectare</span></Link>
-		</>
-	);
+	links = [
+		<Link to={'/test_centers'}><span>Test</span></Link>,
+		<Link to={'/vaccine_centers'}><span>Vaccin</span></Link>,
+		<Link to={'/questions'}><span>Întrebări</span></Link>,
+		<Link to={'/logout'}><span>Deconectare</span></Link>
+	];
+	if('ADMIN'.localeCompare(localStorage.getItem('role')) === 0) {
+		links.push(<Link to={'/admin'}><span>Administrare</span></Link>);
+	}
 } else {
 	links = (<Link to={'/login'}><span>Autentificare</span></Link>);
 }
@@ -39,7 +42,7 @@ ReactDOM.render(
   <React.StrictMode>
 	<Router>
 		<div class="header-container">
-			<Link to={'/'}><span>Pagina principală</span></Link>
+			<Link to={'/'}><span>Acasă</span></Link>
 			{ links }
 		</div>
 		<div id="title">
@@ -64,6 +67,8 @@ ReactDOM.render(
 			<Route path='/questions' component={Questions} />
 			<Route path='/add_news' component={AddNews} />
 			<Route path='/edit_news/:id' component={EditNews} />
+			<Route path='/admin' component={AdminMenu} />
+			<Route path='/administer_user/:id' component={AdministerUser} />
 		</Switch>
 	</Router>
 	<Footer />

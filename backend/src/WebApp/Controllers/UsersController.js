@@ -6,10 +6,12 @@ const JWTFilter = require('../Filters/JWTFilter.js');
 const ServerError = require('../Models/ServerError.js');
 
 const {
-    UserBody,
+    UserRegisterBody,
     UserLoginBody,
+    UserPutBody,
     UserRegisterResponse,
-    UserLoginResponse
+    UserLoginResponse,
+    UserResponse
 } = require ('../Models/Users.js');
 const ResponseFilter = require('../Filters/ResponseFilter.js');
 const AuthorizationFilter = require('../Filters/AuthorizationFilter.js');
@@ -17,7 +19,7 @@ const AuthorizationFilter = require('../Filters/AuthorizationFilter.js');
 const Router = express.Router();
 
 Router.post('/register', async (req, res) => {
-    const userBody = new UserBody(req.body);
+    const userBody = new UserRegisterBody(req.body);
 
     try {
         const user = await UsersManager.registerAsync(
@@ -56,7 +58,16 @@ Router.put('/activate/:code', async (req, res) => {
 Router.get('/', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.authorizeRoles('ADMIN'), async (req, res) => {
     const users = await UsersRepository.getAllAsync();
 
-    ResponseFilter.setResponseDetails(res, 200, users.map(user => new UserRegisterResponse(user)));
+    ResponseFilter.setResponseDetails(res, 200, users.map(user => new UserResponse(user)));
+});
+
+Router.get('/:id', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.authorizeRoles('ADMIN'), async (req, res) => {
+    let {
+        id
+    } = req.params;
+    const user = await UsersRepository.getByIdAsync(id);
+
+    ResponseFilter.setResponseDetails(res, 200, new UserResponse(user));
 });
 
 Router.put('/:userId/role/:roleId', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.authorizeRoles('ADMIN'), async (req, res) => {
@@ -69,6 +80,14 @@ Router.put('/:userId/role/:roleId', JWTFilter.authorizeAndExtractTokenAsync, Aut
     roleId = parseInt(roleId);
     
     await UsersRepository.updateRole(userId, roleId);
+});
+
+Router.put('/', async (req, res) => {
+    const userBody = new UserPutBody(req.body);
+    const user = await UsersRepository.updateById(userBody.id, userBody.email,
+        userBody.last_name, userBody.first_name, userBody.cnp, userBody.address, userBody.role, userBody.activated);
+
+    ResponseFilter.setResponseDetails(res, 200, new UserResponse(user));
 });
 
 module.exports = Router;

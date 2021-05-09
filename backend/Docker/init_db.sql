@@ -117,4 +117,4 @@ INSERT INTO roles (value) VALUES ('ADMIN');
 INSERT INTO roles (value) VALUES ('SUPPORT');
 INSERT INTO roles (value) VALUES ('USER');
 INSERT INTO users (email, password, last_name, first_name, cnp, address, activated, role_id)
-    VALUES ('admin@localhost', '$2y$10$BLMZFAnCPXX0cVRmdPP3Meu3NR/xWucAyQ4aAW2z57RlLdLPvH0Hi', 'Admin', '', '', '', true, 1);
+    VALUES ('admin@localhost', '$2y$10$BLMZFAnCPXX0cVRmdPP3Meu3NR/xWucAyQ4aAW2z57RlLdLPvH0Hi', 'Admin', '', '-', '-', true, 1);
