@@ -1,4 +1,8 @@
 import React from 'react';
+import TestCenterReviewGraph from './TestCenterReviewGraph.js'
+import VaccineCenterReviewGraph from './VaccineCenterReviewGraph.js'
+import TestGraph from './TestGraph.js'
+import VaccineGraph from './VaccineGraph.js'
 import './register.scss';
 
 class AdministerUser extends React.Component {
@@ -53,72 +57,80 @@ class AdministerUser extends React.Component {
 			})
 			.then(response => response.json().then(json => this.handleGetRolesResponse(response.status, json.response)))
 		})
-		.catch(error => {});
+		.catch(error => console.log(error));
 	}
 
 	render() {
 		return (
-			<div class="form_wrapper">
-				<div class="form_container">
-					<div class="title_container">
-						<h2>Administrează utilizatorul</h2>
-					</div>
-					<div class="clearfix">
-						<div class="">
-							<form onSubmit={this.formSubmit.bind(this)}>
-								<div class="input_field" style={{width: '100%'}}>
-									<span>
-										<i aria-hidden="true" class="fa fa-envelope"/>
-									</span>
-									<input type="text" name="email" placeholder="E-mail" onChange={this.handleChange.bind(this, "email")}
-										ref={this.email_ref} minLength="4" required />
-								</div>
-								<div class="input_field">
-									<span>
-										<i aria-hidden="true" class="fa fa-envelope"/>
-									</span>
-									<input type="text" name="last_name" placeholder="Nume" onChange={this.handleChange.bind(this, "last_name")}
-										ref={this.last_name_ref} minLength="4" required />
-								</div>
-								<div class="input_field">
-									<span>
-										<i aria-hidden="true" class="fa fa-envelope"/>
-									</span>
-									<input type="text" name="first_name" placeholder="Prenume" onChange={this.handleChange.bind(this, "first_name")}
-										ref={this.first_name_ref} minLength="4" required />
-								</div>
-								<div class="input_field">
-									<span>
-										<i aria-hidden="true" class="fa fa-envelope"/>
-									</span>
-									<input type="text" name="cnp" placeholder="CNP" onChange={this.handleChange.bind(this, "cnp")}
-										ref={this.cnp_ref} minLength="4" required />
-								</div>
-								<div class="input_field">
-									<span>
-										<i aria-hidden="true" class="fa fa-envelope"/>
-									</span>
-									<input type="text" name="address" placeholder="Adresă" onChange={this.handleChange.bind(this, "address")}
-										ref={this.address_ref} minLength="4" required />
-								</div>
-								<div class="input_field select_option">
-									<select ref={this.role_ref} onChange={this.handleChange.bind(this, "role")}>
-										{this.state.roles}
-									</select>
-									<div class="select_arrow"></div>
-								</div>
-								<div class="input_field checkbox_option">
-									<input type="checkbox" id="cb1" ref={this.activated_ref} onChange={this.handleCheckboxChange.bind(this)} />
-									<label htmlFor="cb1">Activat</label>
-								</div>
-								<input class="button" type="submit" value="Modifică" />
-								<span style={{color: "green", "display": "table", "margin": "0 auto"}}>{this.state.successMessage}</span>
-								<span style={{color: "red", "display": "table", "margin": "0 auto"}}>{this.state.errorMessage}</span>
-							</form>
+			<>
+				<div class="form_wrapper">
+					<div class="form_container">
+						<div class="title_container">
+							<h2>Administrează utilizatorul</h2>
+						</div>
+						<div class="clearfix">
+							<div class="">
+								<form onSubmit={this.formSubmit.bind(this)}>
+									<div class="input_field" style={{width: '100%'}}>
+										<span>
+											<i aria-hidden="true" class="fa fa-envelope"/>
+										</span>
+										<input type="text" name="email" placeholder="E-mail" onChange={this.handleChange.bind(this, "email")}
+											ref={this.email_ref} minLength="4" required />
+									</div>
+									<div class="input_field">
+										<span>
+											<i aria-hidden="true" class="fa fa-envelope"/>
+										</span>
+										<input type="text" name="last_name" placeholder="Nume" onChange={this.handleChange.bind(this, "last_name")}
+											ref={this.last_name_ref} minLength="4" required />
+									</div>
+									<div class="input_field">
+										<span>
+											<i aria-hidden="true" class="fa fa-envelope"/>
+										</span>
+										<input type="text" name="first_name" placeholder="Prenume" onChange={this.handleChange.bind(this, "first_name")}
+											ref={this.first_name_ref} minLength="4" required />
+									</div>
+									<div class="input_field">
+										<span>
+											<i aria-hidden="true" class="fa fa-envelope"/>
+										</span>
+										<input type="text" name="cnp" placeholder="CNP" onChange={this.handleChange.bind(this, "cnp")}
+											ref={this.cnp_ref} minLength="4" required />
+									</div>
+									<div class="input_field">
+										<span>
+											<i aria-hidden="true" class="fa fa-envelope"/>
+										</span>
+										<input type="text" name="address" placeholder="Adresă" onChange={this.handleChange.bind(this, "address")}
+											ref={this.address_ref} minLength="4" required />
+									</div>
+									<div class="input_field select_option">
+										<select ref={this.role_ref} onChange={this.handleChange.bind(this, "role")}>
+											{this.state.roles}
+										</select>
+										<div class="select_arrow"></div>
+									</div>
+									<div class="input_field checkbox_option">
+										<input type="checkbox" id="cb1" ref={this.activated_ref} onChange={this.handleCheckboxChange.bind(this)} />
+										<label htmlFor="cb1">Activat</label>
+									</div>
+									<input class="button" type="submit" value="Modifică" />
+									<span style={{color: "green", "display": "table", "margin": "0 auto"}}>{this.state.successMessage}</span>
+									<span style={{color: "red", "display": "table", "margin": "0 auto"}}>{this.state.errorMessage}</span>
+								</form>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+				<div style={{height: "200px", width: "20%", display: "flex", "justify-content": "center", "margin-left": "auto", "margin-right": "auto", "margin-bottom": "4vw"}}>
+					<TestCenterReviewGraph userId={this.user_id} />
+					<VaccineCenterReviewGraph userId={this.user_id} />
+					<TestGraph userId={this.user_id} />
+					<VaccineGraph userId={this.user_id} />
+				</div>
+			</>
 		);
 	}
 

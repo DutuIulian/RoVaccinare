@@ -71,8 +71,17 @@ class VaccineAppointmentResponse {
     }
 }
 
+class GraphResponse {
+    constructor(testCenterReview) {
+        this.count = testCenterReview.count;
+        this.exact_date = testCenterReview.exact_date.toISOString()
+        this.exact_date = this.exact_date.substr(0, this.exact_date.indexOf('T'))
+    }
+}
+
 module.exports =  {
     VaccineAppointmentPostBody,
     VaccineAppointmentPutBody,
-    VaccineAppointmentResponse
+    VaccineAppointmentResponse,
+    GraphResponse
 }

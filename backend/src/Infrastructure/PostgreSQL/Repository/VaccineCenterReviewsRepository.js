@@ -45,9 +45,21 @@ const getByUserIdCenterIdAsync = async(user_id, center_id) => {
     return reviews;
 };
 
+const getGraphByUserId = async(user_id) => {
+    const reviews = await queryAsync(
+        `SELECT DATE(date) AT TIME ZONE 'IOT' AS exact_date, COUNT(*) as count
+            FROM vaccine_center_reviews
+            WHERE user_id=$1 AND DATE(date) AT TIME ZONE 'IOT' > current_date - interval '30' day
+            GROUP BY exact_date`,
+        [user_id]
+    );
+    return reviews;
+}
+
 module.exports = {
     addAsync,
     updateAsync,
     getByCenterIdAsync,
-    getByUserIdCenterIdAsync
+    getByUserIdCenterIdAsync,
+    getGraphByUserId
 }

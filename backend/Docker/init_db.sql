@@ -52,6 +52,7 @@ CREATE TABLE IF NOT EXISTS test_appointments (
     id serial PRIMARY KEY,
     date_time timestamptz NOT NULL,
     status VARCHAR DEFAULT 'Programat',
+    last_update timestamptz DEFAULT NOW(),
     test_id integer REFERENCES tests(id),
     user_id integer REFERENCES users(id)
 );
@@ -74,6 +75,7 @@ CREATE TABLE IF NOT EXISTS vaccine_appointments (
     id serial PRIMARY KEY,
     date_time timestamptz NOT NULL,
     status VARCHAR DEFAULT 'Programat',
+    last_update timestamptz DEFAULT NOW(),
     vaccine_id integer REFERENCES vaccines(id),
     user_id integer REFERENCES users(id)
 );
