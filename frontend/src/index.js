@@ -20,6 +20,7 @@ import EditNews from './EditNews'
 import AdminMenu from './AdminMenu'
 import AdministerUser from './AdministerUser'
 import AddUser from './AddUser'
+import AddTestCenter from './AddTestCenter'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 let storedJwt = localStorage.getItem('token');
@@ -71,6 +72,7 @@ ReactDOM.render(
 			<Route path='/admin' component={AdminMenu} />
 			<Route path='/administer_user/:id' component={AdministerUser} />
 			<Route path='/add_user' component={AddUser} />
+			<Route path='/add_test_center' component={AddTestCenter} />
 		</Switch>
 	</Router>
 	<Footer />

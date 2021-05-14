@@ -1,7 +1,7 @@
 import React from 'react';
 import './register.scss';
 
-class AddNews extends React.Component {
+class AddTestCenter extends React.Component {
 	constructor(props){
 		super(props);
 
@@ -16,7 +16,32 @@ class AddNews extends React.Component {
 		this.state = {
 			fields: {},
 			successMessage: "",
-			errorMessage: ""
+			errorMessage: "",
+			localities: ""
+		}
+	}
+
+	componentDidMount() {
+        const rolesUrl = process.env.REACT_APP_API_URL + "/localities";
+		fetch(rolesUrl, {
+			method: "GET",
+			mode: "cors",
+			headers: {
+				"Authorization": "Bearer " + this.storedJwt
+			}
+		})
+		.then(response => response.json().then(json => this.handleGetLocalitiesResponse(response.status, json.response)))
+    }
+
+	handleGetLocalitiesResponse(status, response) {
+		if(Math.floor(status / 100) === 2) {
+			let localities = response.map(locality => <option value={locality.id}>{locality.name}</option>);
+			let fields = this.state.fields;
+			fields["locality"] = response[0].id;
+			this.setState({
+				localities: localities,
+				fields:fields
+			});
 		}
 	}
 
@@ -25,21 +50,30 @@ class AddNews extends React.Component {
 			<div class="form_wrapper">
 				<div class="form_container">
 					<div class="title_container">
-						<h2>Adaugă o știre</h2>
+						<h2>Adaugă un centru de testare</h2>
 					</div>
 					<div class="clearfix">
 						<div class="">
 							<form onSubmit={this.formSubmit.bind(this)}>
 								<div class="input_field" style={{width: '100%'}}>
 									<span>
-										<i aria-hidden="true" class="fa fa-envelope"/>
+										<i aria-hidden="true" class="fa fa-book"/>
 									</span>
-									<input type="text" name="title" placeholder="Titlu" onChange={this.handleChange.bind(this, "title")}
+									<input type="text" name="name" placeholder="Nume" onChange={this.handleChange.bind(this, "name")}
 										minLength="4" required />
 								</div>
 								<div class="input_field">
-									<textarea name="content" placeholder="Text" onChange={this.handleChange.bind(this, "content")}
-										rows="10" style={{width: '100%'}} minLength="4" required />
+									<span>
+										<i aria-hidden="true" class="fa fa-building"/>
+									</span>
+									<input type="text" name="address" placeholder="Adresă" onChange={this.handleChange.bind(this, "address")}
+										minLength="4" required />
+								</div>
+								<div class="input_field select_option">
+									<select onChange={this.handleChange.bind(this, "locality")}>
+										{this.state.localities}
+									</select>
+									<div class="select_arrow"></div>
 								</div>
 								<input class="button" type="submit" value="Adaugă" />
 								<span style={{color: "green", "display": "table", "margin": "0 auto"}}>{this.state.successMessage}</span>
@@ -62,10 +96,12 @@ class AddNews extends React.Component {
 		e.preventDefault();
 
 		const data = {
-			"title": this.state.fields["title"],
-			"content": this.state.fields["content"]
+			"name": this.state.fields["name"],
+			"address": this.state.fields["address"],
+			"locality_id": this.state.fields["locality"]
 		};
-		const url = process.env.REACT_APP_API_URL + "/news";
+		console.log(JSON.stringify(data));
+		const url = process.env.REACT_APP_API_URL + "/test_centers";
 
 		fetch(url, {
 			method: "POST",
@@ -82,7 +118,7 @@ class AddNews extends React.Component {
 
 	handleStatus(status) {
 		if(Math.floor(status / 100) === 2) {
-			this.setState({successMessage: 'Știrea a fost adăugată cu succes.'});
+			this.setState({successMessage: 'Centrul de testare a fost adăugat cu succes.'});
 			this.setState({errorMessage: ''});
 		}  else {
 			this.setState({errorMessage: 'A apărut o eroare!'});
@@ -96,4 +132,4 @@ class AddNews extends React.Component {
 	}
 }
 
-export default AddNews;
+export default AddTestCenter;

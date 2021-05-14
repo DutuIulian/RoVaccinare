@@ -80,28 +80,28 @@ class AdministerUser extends React.Component {
 									</div>
 									<div class="input_field">
 										<span>
-											<i aria-hidden="true" class="fa fa-envelope"/>
+											<i aria-hidden="true" class="fa fa-user"/>
 										</span>
 										<input type="text" name="last_name" placeholder="Nume" onChange={this.handleChange.bind(this, "last_name")}
 											ref={this.last_name_ref} minLength="4" required />
 									</div>
 									<div class="input_field">
 										<span>
-											<i aria-hidden="true" class="fa fa-envelope"/>
+											<i aria-hidden="true" class="fa fa-user"/>
 										</span>
 										<input type="text" name="first_name" placeholder="Prenume" onChange={this.handleChange.bind(this, "first_name")}
 											ref={this.first_name_ref} minLength="4" required />
 									</div>
 									<div class="input_field">
 										<span>
-											<i aria-hidden="true" class="fa fa-envelope"/>
+											<i aria-hidden="true" class="fa fa-address-card"/>
 										</span>
 										<input type="text" name="cnp" placeholder="CNP" onChange={this.handleChange.bind(this, "cnp")}
 											ref={this.cnp_ref} minLength="4" required />
 									</div>
 									<div class="input_field">
 										<span>
-											<i aria-hidden="true" class="fa fa-envelope"/>
+											<i aria-hidden="true" class="fa fa-address-card"/>
 										</span>
 										<input type="text" name="address" placeholder="Adresă" onChange={this.handleChange.bind(this, "address")}
 											ref={this.address_ref} minLength="4" required />

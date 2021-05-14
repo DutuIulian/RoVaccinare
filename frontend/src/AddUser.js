@@ -155,7 +155,7 @@ class AddUser extends React.Component {
 									<input type="text" name="address" placeholder="Adresă" onChange={this.handleChange.bind(this, "address")} required />
 								</div>
 								<div class="input_field select_option">
-									<select ref={this.role_ref} onChange={this.handleChange.bind(this, "role")}>
+									<select onChange={this.handleChange.bind(this, "role")}>
 										{this.state.roles}
 									</select>
 									<div class="select_arrow"></div>

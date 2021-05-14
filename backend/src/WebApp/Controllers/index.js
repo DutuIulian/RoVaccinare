@@ -13,6 +13,7 @@ const VaccineAppointmentsController = require('./VaccineAppointmentsController.j
 const VaccineCenterReviewsController = require('./VaccineCenterReviewsController.js');
 const NewsController = require('./NewsController.js');
 const QuestionsController = require('./QuestionsController.js');
+const LocalitiesController = require('./LocalitiesController.js');
 const JWTFilter = require('../Filters/JWTFilter.js');
 
 Router.use('/v1/roles', JWTFilter.authorizeAndExtractTokenAsync, RolesController);
@@ -28,5 +29,6 @@ Router.use('/v1/vaccine_appointments', VaccineAppointmentsController);
 Router.use('/v1/vaccine_center_reviews', VaccineCenterReviewsController);
 Router.use('/v1/news', NewsController);
 Router.use('/v1/questions', QuestionsController);
+Router.use('/v1/localities', LocalitiesController);
 
 module.exports = Router;
