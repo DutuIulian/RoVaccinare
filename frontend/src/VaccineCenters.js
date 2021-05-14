@@ -32,14 +32,20 @@ class VaccineCenters extends React.Component {
 	}
 
 	render() {
-		return (
-			<>
-				<p>{ this.state.message }</p>
+		if('ADMIN'.localeCompare(localStorage.getItem('role')) === 0) {
+			return (
+				<table class="centers-box">
+					<thead><tr><td></td><td></td><td></td><td></td><td><Link to={'/add_vaccine_center'}><input type="submit" value="Adaugă" /></Link></td></tr></thead>
+					{ this.state.center_list }
+				</table>
+			);
+		} else {
+			return (
 				<table class="centers-box">
 					{ this.state.center_list }
 				</table>
-			</>
-		);
+			);
+		}
 	}
 
 	handleResponse(status, response) {
