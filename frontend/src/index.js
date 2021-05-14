@@ -21,7 +21,9 @@ import AdminMenu from './AdminMenu'
 import AdministerUser from './AdministerUser'
 import AddUser from './AddUser'
 import AddTestCenter from './AddTestCenter'
+import AddTest from './AddTest'
 import AddVaccineCenter from './AddVaccineCenter'
+import AddVaccine from './AddVaccine'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 let storedJwt = localStorage.getItem('token');
@@ -74,7 +76,9 @@ ReactDOM.render(
 			<Route path='/administer_user/:id' component={AdministerUser} />
 			<Route path='/add_user' component={AddUser} />
 			<Route path='/add_test_center' component={AddTestCenter} />
+			<Route path='/add_test/:id' component={AddTest} />
 			<Route path='/add_vaccine_center' component={AddVaccineCenter} />
+			<Route path='/add_vaccine/:id' component={AddVaccine} />
 		</Switch>
 	</Router>
 	<Footer />

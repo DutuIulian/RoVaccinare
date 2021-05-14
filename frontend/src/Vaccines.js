@@ -18,8 +18,8 @@ class Vaccines extends React.Component {
     }
 
     componentDidMount() {
-        const id = this.props.match.params.id;
-        this.fetchData(id);
+        this.id = this.props.match.params.id;
+        this.fetchData(this.id);
     }
 
     fetchData = id => {
@@ -37,14 +37,20 @@ class Vaccines extends React.Component {
     }
 
     render() {
-        return (
-            <>
-                <p>{ this.state.message }</p>
+        if('ADMIN'.localeCompare(localStorage.getItem('role')) === 0) {
+            return (
+                <table class="centers-box">
+                    <thead><tr><td></td><td></td><td></td><td></td><td><Link to={'/add_vaccine/' + this.id}><input type="submit" value="Adaugă" /></Link></td></tr></thead>
+                    { this.state.vaccine_list }
+                </table>
+            );
+        } else {
+            return (
                 <table class="centers-box">
                     { this.state.vaccine_list }
                 </table>
-            </>
-        );
+            );
+        }
     }
 
     handleResponse(status, response) {

@@ -33,7 +33,7 @@ class Home extends React.Component {
 		if('ADMIN'.localeCompare(localStorage.getItem('role')) === 0) {
 			return (
 				<table class="news">
-					<tr><td><Link to={'/add_news'}><input class="button" type="submit" value="Adaugă" /></Link></td></tr>
+					<tr><td><Link to={'/add_news'}><input class="button" type="submit" value="Adaugă" style={{width: "17vw"}} /></Link></td></tr>
 					{this.state.news_list}
 				</table>
 			);
