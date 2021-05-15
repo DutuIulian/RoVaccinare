@@ -51,6 +51,7 @@ class TestResponse {
     constructor(test) {
         this.name = test.name;
         this.available_quantity = test.available_quantity;
+        this.center_id = test.center_id;
         this.id = test.id;
     }
 }

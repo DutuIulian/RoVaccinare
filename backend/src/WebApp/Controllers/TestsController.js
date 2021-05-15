@@ -21,16 +21,25 @@ Router.post('/', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.au
 });
 
 Router.put('/', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.authorizeRoles('ADMIN'), async (req, res) => {
-    const testBody = new TestPutBody(req.body);
-    await TestsRepository.updateAsync(testBody.id, testBody.name, testBody.available_quantity, testBody.center_id);
+    const testBody = new TestPutBody(req.body, req.body.id);
+    const test = await TestsRepository.updateAsync(testBody.id, testBody.name, testBody.available_quantity);
+    ResponseFilter.setResponseDetails(res, 200, new TestResponse(test));
 });
 
-Router.get('/:center_id', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.authorizeRoles('ADMIN', 'SUPPORT', 'USER'), async (req, res) => {
+Router.get('/test_center/:center_id', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.authorizeRoles('ADMIN', 'SUPPORT', 'USER'), async (req, res) => {
     let {
         center_id
     } = req.params;
     const tests = await TestsRepository.getAllByCenterIdAsync(center_id);
     ResponseFilter.setResponseDetails(res, 200, tests.map(test => new TestResponse(test)));
+});
+
+Router.get('/:id', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.authorizeRoles('ADMIN', 'SUPPORT', 'USER'), async (req, res) => {
+    let {
+        id
+    } = req.params;
+    const test = await TestsRepository.getByIdAsync(id);
+    ResponseFilter.setResponseDetails(res, 200, new TestResponse(test));
 });
 
 module.exports = Router;

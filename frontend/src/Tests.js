@@ -23,7 +23,7 @@ class Tests extends React.Component {
     }
 
     fetchData = id => {
-        const url = process.env.REACT_APP_API_URL + "/tests/" + id;
+        const url = process.env.REACT_APP_API_URL + "/tests/test_center/" + id;
 
         fetch(url, {
             method: "GET",
@@ -40,7 +40,7 @@ class Tests extends React.Component {
         if('ADMIN'.localeCompare(localStorage.getItem('role')) === 0) {
             return (
                 <table class="centers-box">
-                    <thead><tr><td></td><td></td><td></td><td></td><td><Link to={'/add_test/' + this.id}><input type="submit" value="Adaugă" /></Link></td></tr></thead>
+                    <thead><tr><td></td><td></td><td></td><td></td><td></td><td><Link to={'/add_test/' + this.id}><input type="submit" value="Adaugă" /></Link></td></tr></thead>
                     { this.state.test_list }
                 </table>
             );
@@ -62,15 +62,24 @@ class Tests extends React.Component {
             } else {
                 response.forEach((test) => {
                     if(test.available_quantity > 0) {
-                        content.push(
-                            <tr>
-                                <td>{test.name}</td>
-                                <td>{test.available_quantity}</td>
-                                <td>
-                                    <Link to={'/schedule_test/' + test.id}><span>Programează-te</span></Link>
-                                </td>
-                            </tr>
-                        );
+                        if('ADMIN'.localeCompare(localStorage.getItem('role')) === 0) {
+                            content.push(
+                                <tr>
+                                    <td>{test.name}</td>
+                                    <td>{test.available_quantity}</td>
+                                    <td><Link to={'/schedule_test/' + test.id}><span>Programează-te</span></Link></td>
+                                    <td><Link to={'/edit_test/' + test.id}><span>Editează</span></Link></td>
+                                </tr>
+                            );
+                        } else {
+                            content.push(
+                                <tr>
+                                    <td>{test.name}</td>
+                                    <td>{test.available_quantity}</td>
+                                    <td><Link to={'/schedule_test/' + test.id}><span>Programează-te</span></Link></td>
+                                </tr>
+                            );
+                        }
                     }
                 });
                 this.setState({test_list: (

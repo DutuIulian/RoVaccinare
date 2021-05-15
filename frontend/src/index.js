@@ -23,6 +23,7 @@ import AddUser from './AddUser'
 import AddTestCenter from './AddTestCenter'
 import EditTestCenter from './EditTestCenter'
 import AddTest from './AddTest'
+import EditTest from './EditTest'
 import AddVaccineCenter from './AddVaccineCenter'
 import EditVaccineCenter from './EditVaccineCenter'
 import AddVaccine from './AddVaccine'
@@ -81,6 +82,7 @@ ReactDOM.render(
 				<Route path='/add_test_center' component={AddTestCenter} />
 				<Route path='/edit_test_center/:id' component={EditTestCenter} />
 				<Route path='/add_test/:id' component={AddTest} />
+				<Route path='/edit_test/:id' component={EditTest} />
 				<Route path='/add_vaccine_center' component={AddVaccineCenter} />
 				<Route path='/edit_vaccine_center/:id' component={EditVaccineCenter} />
 				<Route path='/add_vaccine/:id' component={AddVaccine} />

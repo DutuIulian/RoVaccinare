@@ -1,7 +1,7 @@
 import React from 'react';
 import './register.scss';
 
-class EditVaccine extends React.Component {
+class EditTest extends React.Component {
 	constructor(props){
 		super(props);
 
@@ -27,7 +27,7 @@ class EditVaccine extends React.Component {
 	}
 
 	componentDidMount() {
-		const url = process.env.REACT_APP_API_URL + "/vaccines/" + this.id;
+		const url = process.env.REACT_APP_API_URL + "/tests/" + this.id;
 		
 		fetch(url, {
 			method: "GET",
@@ -36,10 +36,10 @@ class EditVaccine extends React.Component {
 				"Authorization": "Bearer " + this.storedJwt
 			}
 		})
-		.then(response => response.json().then(json => this.handleGetVaccineResponse(response.status, json.response)))
+		.then(response => response.json().then(json => this.handleGetTestResponse(response.status, json.response)))
 	}
 
-	handleGetVaccineResponse(status, response) {
+	handleGetTestResponse(status, response) {
 		if(Math.floor(status / 100) === 2) {
 			let fields = {};
 
@@ -56,7 +56,7 @@ class EditVaccine extends React.Component {
 			<div class="form_wrapper">
 				<div class="form_container">
 					<div class="title_container">
-						<h2>Editează vaccinul</h2>
+						<h2>Editează testul</h2>
 					</div>
 					<div class="clearfix">
 						<div class="">
@@ -108,7 +108,7 @@ class EditVaccine extends React.Component {
 			"available_quantity": this.state.fields["quantity"],
 			"center_id": this.center_id
 		};
-		const url = process.env.REACT_APP_API_URL + "/vaccines";
+		const url = process.env.REACT_APP_API_URL + "/tests";
 
 		fetch(url, {
 			method: "PUT",
@@ -125,7 +125,7 @@ class EditVaccine extends React.Component {
 
 	handleStatus(status) {
 		if(Math.floor(status / 100) === 2) {
-			this.setState({successMessage: 'Vaccinul a fost modificat cu succes.'});
+			this.setState({successMessage: 'Testul a fost modificat cu succes.'});
 			this.setState({errorMessage: ''});
 		}  else {
 			this.setState({errorMessage: 'A apărut o eroare!'});
@@ -139,4 +139,4 @@ class EditVaccine extends React.Component {
 	}
 }
 
-export default EditVaccine;
+export default EditTest;

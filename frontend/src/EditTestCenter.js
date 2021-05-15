@@ -21,9 +21,6 @@ class EditTestCenter extends React.Component {
 		}
 
 		this.id = this.props.match.params.id;
-		console.log('foobar');
-		console.log(this.id);
-
 		this.name_ref = React.createRef();
 		this.address_ref = React.createRef();
 	}

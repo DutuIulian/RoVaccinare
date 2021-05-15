@@ -100,7 +100,6 @@ class AddVaccineCenter extends React.Component {
 			"address": this.state.fields["address"],
 			"locality_id": this.state.fields["locality"]
 		};
-		console.log(JSON.stringify(data));
 		const url = process.env.REACT_APP_API_URL + "/vaccine_centers";
 
 		fetch(url, {

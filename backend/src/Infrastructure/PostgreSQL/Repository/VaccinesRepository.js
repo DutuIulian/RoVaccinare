@@ -30,7 +30,7 @@ const getAllByCenterIdAsync = async(center_id) => {
 };
 
 const getByIdAsync = async(id) => {
-    console.info(`Getting vaccines with id ${id}`);
+    console.info(`Getting vaccine with id ${id}`);
 
     const vaccines = await queryAsync(`SELECT * FROM vaccines WHERE id=$1`, [id]);
     return vaccines[0];

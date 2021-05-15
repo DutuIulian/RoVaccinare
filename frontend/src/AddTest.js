@@ -78,7 +78,6 @@ class AddTest extends React.Component {
 			available_quantity: this.state.fields["quantity"],
 			center_id: this.center_id
 		};
-		console.log(JSON.stringify(data));
 		const url = process.env.REACT_APP_API_URL + "/tests";
 
 		fetch(url, {

@@ -61,18 +61,14 @@ class Vaccines extends React.Component {
                 this.setState({vaccine_list: this.buildTbodyFromString('Nu există niciun vaccin disponibil.')});
             } else {
                 response.forEach((vaccine) => {
-                    if('ADMIN'.localeCompare(localStorage.getItem('role')) === 0) {
-                        if(vaccine.available_quantity > 0) {
+                    if(vaccine.available_quantity > 0) {
+                        if('ADMIN'.localeCompare(localStorage.getItem('role')) === 0) {
                             content.push(
                                 <tr>
                                     <td>{vaccine.name}</td>
                                     <td>{vaccine.available_quantity}</td>
-                                    <td>
-                                        <Link to={'/schedule_vaccine/' + vaccine.id}><span>Programează-te</span></Link>
-                                    </td>
-                                    <td>
-                                        <Link to={'/edit_vaccine/' + vaccine.id}><span>Editează</span></Link>
-                                    </td>
+                                    <td><Link to={'/schedule_vaccine/' + vaccine.id}><span>Programează-te</span></Link></td>
+                                    <td><Link to={'/edit_vaccine/' + vaccine.id}><span>Editează</span></Link></td>
                                 </tr>
                             );
                         } else {
@@ -80,9 +76,7 @@ class Vaccines extends React.Component {
                                 <tr>
                                     <td>{vaccine.name}</td>
                                     <td>{vaccine.available_quantity}</td>
-                                    <td>
-                                        <Link to={'/schedule_vaccine/' + vaccine.id}><span>Programează-te</span></Link>
-                                    </td>
+                                    <td><Link to={'/schedule_vaccine/' + vaccine.id}><span>Programează-te</span></Link></td>
                                 </tr>
                             );
                         }

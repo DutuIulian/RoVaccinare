@@ -100,7 +100,6 @@ class AddTestCenter extends React.Component {
 			"address": this.state.fields["address"],
 			"locality_id": this.state.fields["locality"]
 		};
-		console.log(JSON.stringify(data));
 		const url = process.env.REACT_APP_API_URL + "/test_centers";
 
 		fetch(url, {
