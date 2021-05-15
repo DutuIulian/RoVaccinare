@@ -30,6 +30,10 @@ Router.get('/vaccine_center/:center_id', JWTFilter.authorizeAndExtractTokenAsync
     let {
         center_id
     } = req.params;
+    if (!center_id || center_id < 1) {
+        throw new ServerError("Id should be a positive integer", 400);
+    }
+
     const vaccines = await VaccinesRepository.getAllByCenterIdAsync(center_id);
     ResponseFilter.setResponseDetails(res, 200, vaccines.map(vaccine => new VaccineResponse(vaccine)));
 });
@@ -38,8 +42,32 @@ Router.get('/:id', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.
     let {
         id
     } = req.params;
+    if (!id || id < 1) {
+        throw new ServerError("Id should be a positive integer", 400);
+    }
+
     const vaccine = await VaccinesRepository.getByIdAsync(id);
+    if (!vaccine) {
+        throw new ServerError(`Vaccine with id ${id} does not exist!`, 404);
+    }
+
     ResponseFilter.setResponseDetails(res, 200, new VaccineResponse(vaccine));
+});
+
+Router.delete('/:id', async (req, res) => {
+    let {
+        id
+    } = req.params;
+    if (!id || id < 1) {
+        throw new ServerError("Id should be a positive integer", 400);
+    }
+    
+    const vaccine = await VaccinesRepository.deleteByIdAsync(id);
+    if (!vaccine) {
+        throw new ServerError(`Vaccine with id ${id} does not exist!`, 404);
+    }
+
+    ResponseFilter.setResponseDetails(res, 204, "Entity deleted succesfully");
 });
 
 module.exports = Router;

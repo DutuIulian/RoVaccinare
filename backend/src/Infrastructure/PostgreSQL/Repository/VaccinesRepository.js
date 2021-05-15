@@ -45,10 +45,18 @@ const increaseQuantityById = async(id, extra_quantity) => {
     );
 };
 
+const deleteByIdAsync = async(id) => {
+    console.info(`Deleting the vaccine with id ${id} from database`);
+
+    const vaccines = await queryAsync('DELETE FROM vaccines WHERE id = $1 RETURNING *', [id]);
+    return vaccines[0];
+};
+
 module.exports = {
     addAsync,
     updateAsync,
     getAllByCenterIdAsync,
     getByIdAsync,
-    increaseQuantityById
+    increaseQuantityById,
+    deleteByIdAsync
 }

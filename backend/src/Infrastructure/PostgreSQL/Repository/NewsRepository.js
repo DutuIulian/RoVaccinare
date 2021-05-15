@@ -40,9 +40,17 @@ const getByIdAsync = async(id) => {
     return news[0];
 };
 
+const deleteByIdAsync = async(id) => {
+    console.info(`Deleting the news with id ${id} from database`);
+
+    const news = await queryAsync('DELETE FROM news WHERE id = $1 RETURNING *', [id]);
+    return news[0];
+};
+
 module.exports = {
     addAsync,
     updateAsync,
     getAllAsync,
-    getByIdAsync
+    getByIdAsync,
+    deleteByIdAsync
 }

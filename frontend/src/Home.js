@@ -59,6 +59,7 @@ class Home extends React.Component {
 					content.push(<tr className="regular_table_row"><td>{news.content}</td></tr>);
 					if("ADMIN".localeCompare(this.role) === 0) {
 						content.push(<tr className="regular_table_row"><td><Link to={"/edit_news/" + news.id}><span>Editează</span></Link></td></tr>);
+						content.push(<tr className="regular_table_row"><td><Link onClick={this.deleteNews.bind(this, news.id)}>Sterge</Link></td></tr>);
 					}
 					content.push(<tr className="regular_table_row"><td><hr /></td></tr>);
 				});
@@ -81,6 +82,23 @@ class Home extends React.Component {
 		return (
 			<tbody><tr><td>{text}</td></tr></tbody>
 		);
+	}
+
+	deleteNews(id) {
+		const url = process.env.REACT_APP_API_URL + "/news/" + id;
+
+		fetch(url, {
+			method: "DELETE",
+			mode: "cors",
+		})
+		.then(response => this.handleDeleteResponse(response.status))
+		.catch(error => this.handleError());
+	}
+
+	handleDeleteResponse(status) {
+		if(Math.floor(status / 100) === 2) {
+			window.location.reload();
+		}
 	}
 }
 

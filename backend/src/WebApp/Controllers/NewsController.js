@@ -35,8 +35,32 @@ Router.get('/:id', async (req, res) => {
     let {
         id
     } = req.params;
+    if (!id || id < 1) {
+        throw new ServerError("Id should be a positive integer", 400);
+    }
+
     const news = await NewsRepository.getByIdAsync(id);
+    if (!news) {
+        throw new ServerError(`News with id ${id} does not exist!`, 404);
+    }
+
     ResponseFilter.setResponseDetails(res, 200, new NewsResponse(news));
+});
+
+Router.delete('/:id', async (req, res) => {
+    let {
+        id
+    } = req.params;
+    if (!id || id < 1) {
+        throw new ServerError("Id should be a positive integer", 400);
+    }
+    
+    const news = await NewsRepository.deleteByIdAsync(id);
+    if (!news) {
+        throw new ServerError(`News with id ${id} does not exist!`, 404);
+    }
+
+    ResponseFilter.setResponseDetails(res, 204, "Entity deleted succesfully");
 });
 
 module.exports = Router;

@@ -45,10 +45,18 @@ const increaseQuantityById = async(id, extra_quantity) => {
     );
 };
 
+const deleteByIdAsync = async(id) => {
+    console.info(`Deleting the test with id ${id} from database`);
+
+    const tests = await queryAsync('DELETE FROM tests WHERE id = $1 RETURNING *', [id]);
+    return tests[0];
+};
+
 module.exports = {
     addAsync,
     updateAsync,
     getAllByCenterIdAsync,
     getByIdAsync,
-    increaseQuantityById
+    increaseQuantityById,
+    deleteByIdAsync
 }

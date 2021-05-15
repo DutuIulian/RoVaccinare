@@ -30,6 +30,10 @@ Router.get('/test_center/:center_id', JWTFilter.authorizeAndExtractTokenAsync, A
     let {
         center_id
     } = req.params;
+    if (!center_id || center_id < 1) {
+        throw new ServerError("Id should be a positive integer", 400);
+    }
+
     const tests = await TestsRepository.getAllByCenterIdAsync(center_id);
     ResponseFilter.setResponseDetails(res, 200, tests.map(test => new TestResponse(test)));
 });
@@ -38,8 +42,33 @@ Router.get('/:id', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.
     let {
         id
     } = req.params;
+    if (!id || id < 1) {
+        throw new ServerError("Id should be a positive integer", 400);
+    }
+
     const test = await TestsRepository.getByIdAsync(id);
+    if (!newtests) {
+        throw new ServerError(`Test with id ${id} does not exist!`, 404);
+    }
+
     ResponseFilter.setResponseDetails(res, 200, new TestResponse(test));
+});
+
+
+Router.delete('/:id', async (req, res) => {
+    let {
+        id
+    } = req.params;
+    if (!id || id < 1) {
+        throw new ServerError("Id should be a positive integer", 400);
+    }
+    
+    const test = await TestsRepository.deleteByIdAsync(id);
+    if (!test) {
+        throw new ServerError(`Test with id ${id} does not exist!`, 404);
+    }
+
+    ResponseFilter.setResponseDetails(res, 204, "Entity deleted succesfully");
 });
 
 module.exports = Router;

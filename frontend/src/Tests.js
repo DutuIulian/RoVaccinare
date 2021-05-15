@@ -40,7 +40,7 @@ class Tests extends React.Component {
         if('ADMIN'.localeCompare(localStorage.getItem('role')) === 0) {
             return (
                 <table class="centers-box">
-                    <thead><tr><td></td><td></td><td></td><td></td><td></td><td><Link to={'/add_test/' + this.id}><input type="submit" value="Adaugă" /></Link></td></tr></thead>
+                    <thead><tr><td></td><td></td><td></td><td></td><td><Link to={'/add_test/' + this.id}><input type="submit" value="Adaugă" /></Link></td></tr></thead>
                     { this.state.test_list }
                 </table>
             );
@@ -69,6 +69,7 @@ class Tests extends React.Component {
                                     <td>{test.available_quantity}</td>
                                     <td><Link to={'/schedule_test/' + test.id}><span>Programează-te</span></Link></td>
                                     <td><Link to={'/edit_test/' + test.id}><span>Editează</span></Link></td>
+                                    <td><Link onClick={this.deleteTest.bind(this, test.id)}>Șterge</Link></td>
                                 </tr>
                             );
                         } else {
@@ -110,6 +111,23 @@ class Tests extends React.Component {
             <tbody><tr><td>{text}</td></tr></tbody>
         );
     }
+
+    deleteTest(id) {
+        const url = process.env.REACT_APP_API_URL + "/tests/" + id;
+
+		fetch(url, {
+			method: "DELETE",
+			mode: "cors",
+		})
+		.then(response => this.handleDeleteResponse(response.status))
+		.catch(error => this.handleError());
+    }
+
+    handleDeleteResponse(status) {
+		if(Math.floor(status / 100) === 2) {
+			window.location.reload();
+		}
+	}
 }
 
 export default Tests;
