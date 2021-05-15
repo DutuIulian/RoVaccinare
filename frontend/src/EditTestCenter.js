@@ -51,7 +51,7 @@ class EditTestCenter extends React.Component {
 			.then(response => response.json().then(json => this.handleGetLocalitiesResponse(response.status, json.response)))
 		})
 		.catch(error => console.log(error));
-    }
+	}
 
 	handleGetCenterResponse(status, response) {
 		if(Math.floor(status / 100) === 2) {
@@ -119,12 +119,12 @@ class EditTestCenter extends React.Component {
 		);
 	}
 
-	handleChange(field, e){			
+	handleChange(field, e){	
 		let fields = this.state.fields;
-		fields[field] = e.target.value;		  
+		fields[field] = e.target.value;	
 		this.setState({fields});
 	}
-	
+
 	formSubmit(e) {
 		e.preventDefault();
 

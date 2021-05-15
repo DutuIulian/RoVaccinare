@@ -22,7 +22,7 @@ class AddTestCenter extends React.Component {
 	}
 
 	componentDidMount() {
-        const url = process.env.REACT_APP_API_URL + "/localities";
+		const url = process.env.REACT_APP_API_URL + "/localities";
 		fetch(url, {
 			method: "GET",
 			mode: "cors",
@@ -31,7 +31,7 @@ class AddTestCenter extends React.Component {
 			}
 		})
 		.then(response => response.json().then(json => this.handleGetLocalitiesResponse(response.status, json.response)))
-    }
+	}
 
 	handleGetLocalitiesResponse(status, response) {
 		if(Math.floor(status / 100) === 2) {

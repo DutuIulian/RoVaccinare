@@ -16,7 +16,7 @@ class VaccineCenters extends React.Component {
 			center_list: <tbody><tr><td>Lista se încarcă...</td></tr></tbody>,
 		}
 	}
-	
+
 	componentDidMount() {
 		const url = process.env.REACT_APP_API_URL + "/vaccine_centers";
 
@@ -35,7 +35,7 @@ class VaccineCenters extends React.Component {
 		if('ADMIN'.localeCompare(localStorage.getItem('role')) === 0) {
 			return (
 				<table class="centers-box">
-					<thead><tr><td></td><td></td><td></td><td></td><td><Link to={'/add_vaccine_center'}><input type="submit" value="Adaugă" /></Link></td></tr></thead>
+					<thead><tr><td></td><td></td><td></td><td></td><td></td><td><Link to={'/add_vaccine_center'}><input type="submit" value="Adaugă" /></Link></td></tr></thead>
 					{ this.state.center_list }
 				</table>
 			);
@@ -56,20 +56,30 @@ class VaccineCenters extends React.Component {
 				this.setState({center_list: this.buildTbodyFromString('Nu există niciun centru disponibil.')});
 			} else {
 				response.forEach((center) => {
-					content.push(
-						<tr>
-							<td>{center.name}</td>
-							<td>{center.address}</td>
-							<td>{center.locality}</td>
-							<td>
-								<Link to={'/vaccines/' + center.id}><span>Programează-te</span></Link>
-							</td>
-							<td>
-								<Link to={'/vaccine_center_reviews/' + center.id}><span>Recenzii</span></Link>
-							</td>
-						</tr>
-					);
+					if('ADMIN'.localeCompare(localStorage.getItem('role')) === 0) {
+						content.push(
+							<tr>
+								<td>{center.name}</td>
+								<td>{center.address}</td>
+								<td>{center.locality}</td>
+								<td><Link to={'/vaccines/' + center.id}><span>Programează-te</span></Link></td>
+								<td><Link to={'/vaccine_center_reviews/' + center.id}><span>Recenzii</span></Link></td>
+								<td><Link to={'/edit_vaccine_center/' + center.id}><span>Editează</span></Link></td>
+							</tr>
+						);
+					} else {
+						content.push(
+							<tr>
+								<td>{center.name}</td>
+								<td>{center.address}</td>
+								<td>{center.locality}</td>
+								<td><Link to={'/vaccines/' + center.id}><span>Programează-te</span></Link></td>
+								<td><Link to={'/vaccine_center_reviews/' + center.id}><span>Recenzii</span></Link></td>
+							</tr>
+						);
+					}
 				});
+
 				this.setState({center_list: (
 					<>
 						<thead>

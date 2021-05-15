@@ -16,7 +16,7 @@ class TestCenters extends React.Component {
 			center_list: <tbody><tr><td>Lista se încarcă...</td></tr></tbody>,
 		}
 	}
-	
+
 	componentDidMount() {
 		const url = process.env.REACT_APP_API_URL + "/test_centers";
 
@@ -99,7 +99,7 @@ class TestCenters extends React.Component {
 			this.setState({center_list: this.buildTbodyFromString("A apărut o eroare!")});
 		}
 	}
-	
+
 	handleError() {
 		this.setState({center_list: this.buildTbodyFromString("A apărut o eroare!")});
 	}

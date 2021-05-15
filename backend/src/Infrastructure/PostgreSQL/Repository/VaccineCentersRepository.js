@@ -17,7 +17,7 @@ const updateAsync = async (id, name, address, locality_id) => {
     console.info(`Updating vaccine center with id ${id}`);
     
     const vaccine_centers = await queryAsync(
-        `UPDATE vaccine_centers SET name = $1, address = $2, locality_id= $3 WHERE id = $4`,
+        `UPDATE vaccine_centers SET name = $1, address = $2, locality_id= $3 WHERE id = $4 RETURNING *`,
         [name, address, locality_id, id]
     );
     return vaccine_centers[0];
@@ -26,13 +26,28 @@ const updateAsync = async (id, name, address, locality_id) => {
 const getAllAsync = async() => {
     console.info(`Getting all vaccine centers from database`);
 
-    return await queryAsync(`SELECT tc.id, tc.name, tc.address, loc.name AS locality
-                                FROM vaccine_centers tc
-                                JOIN localities loc ON tc.locality_id=loc.id`);
+    return await queryAsync(`SELECT vc.id, vc.name, vc.address, loc.name AS locality
+                                FROM vaccine_centers vc
+                                JOIN localities loc ON vc.locality_id=loc.id
+                                ORDER BY vc.id ASC`);
+};
+
+const getByIdAsync = async(id) => {
+    console.info(`Getting vaccine centers with id ${id} from database`);
+
+    const vaccine_centers = await queryAsync(
+        `SELECT id, name, address, locality_id
+            FROM vaccine_centers
+            WHERE id=$1`,
+        [id]
+    );
+
+    return vaccine_centers[0];
 };
 
 module.exports = {
     addAsync,
     updateAsync,
-    getAllAsync
+    getAllAsync,
+    getByIdAsync
 }

@@ -33,7 +33,7 @@ const getAllAsync = async() => {
 };
 
 const getByIdAsync = async(id) => {
-    console.info(`Getting test centers with id ${id}from database`);
+    console.info(`Getting test centers with id ${id} from database`);
 
     const test_centers = await queryAsync(
         `SELECT id, name, address, locality_id
