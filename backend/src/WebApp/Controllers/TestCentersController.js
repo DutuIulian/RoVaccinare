@@ -7,7 +7,8 @@ const AuthorizationFilter = require('../Filters/AuthorizationFilter.js');
 const {
     TestCenterPostBody,
     TestCenterPutBody,
-    TestCenterResponse
+    TestCenterResponse,
+    TestCenterResponse2
 } = require('../Models/TestCenter.js');
 
 const ResponseFilter = require('../Filters/ResponseFilter.js');
@@ -21,8 +22,17 @@ Router.post('/', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.au
 });
 
 Router.put('/', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.authorizeRoles('ADMIN'), async (req, res) => {
-    const testCenterBody = new TestCenterPutBody(req.body);
-    await TestCentersRepository.updateAsync(testCenterBody.id, testCenterBody.name, testCenterBody.address, testCenterBody.locality_id);
+    const testCenterBody = new TestCenterPutBody(req.body, req.body.id);
+    const testCenter = await TestCentersRepository.updateAsync(testCenterBody.id, testCenterBody.name, testCenterBody.address, testCenterBody.locality_id);
+    ResponseFilter.setResponseDetails(res, 200, new TestCenterResponse(testCenter));
+});
+
+Router.get('/:id', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.authorizeRoles('ADMIN', 'SUPPORT', 'USER'), async (req, res) => {
+    let {
+        id
+    } = req.params;
+    const testCenter = await TestCentersRepository.getByIdAsync(id);
+    ResponseFilter.setResponseDetails(res, 200, new TestCenterResponse2(testCenter));
 });
 
 Router.get('/', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.authorizeRoles('ADMIN', 'SUPPORT', 'USER'), async (req, res) => {

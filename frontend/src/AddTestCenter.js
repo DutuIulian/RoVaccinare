@@ -22,8 +22,8 @@ class AddTestCenter extends React.Component {
 	}
 
 	componentDidMount() {
-        const rolesUrl = process.env.REACT_APP_API_URL + "/localities";
-		fetch(rolesUrl, {
+        const url = process.env.REACT_APP_API_URL + "/localities";
+		fetch(url, {
 			method: "GET",
 			mode: "cors",
 			headers: {

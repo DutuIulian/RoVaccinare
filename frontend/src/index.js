@@ -21,6 +21,7 @@ import AdminMenu from './AdminMenu'
 import AdministerUser from './AdministerUser'
 import AddUser from './AddUser'
 import AddTestCenter from './AddTestCenter'
+import EditTestCenter from './EditTestCenter'
 import AddTest from './AddTest'
 import AddVaccineCenter from './AddVaccineCenter'
 import AddVaccine from './AddVaccine'
@@ -76,6 +77,7 @@ ReactDOM.render(
 			<Route path='/administer_user/:id' component={AdministerUser} />
 			<Route path='/add_user' component={AddUser} />
 			<Route path='/add_test_center' component={AddTestCenter} />
+			<Route path='/edit_test_center/:id' component={EditTestCenter} />
 			<Route path='/add_test/:id' component={AddTest} />
 			<Route path='/add_vaccine_center' component={AddVaccineCenter} />
 			<Route path='/add_vaccine/:id' component={AddVaccine} />

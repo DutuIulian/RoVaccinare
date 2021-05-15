@@ -56,8 +56,18 @@ class TestCenterResponse {
     }
 }
 
+class TestCenterResponse2 {
+    constructor(test_center) {
+        this.name = test_center.name;
+        this.address = test_center.address;
+        this.locality_id = test_center.locality_id;
+        this.id = test_center.id;
+    }
+}
+
 module.exports =  {
     TestCenterPostBody,
     TestCenterPutBody,
-    TestCenterResponse
+    TestCenterResponse,
+    TestCenterResponse2
 }
