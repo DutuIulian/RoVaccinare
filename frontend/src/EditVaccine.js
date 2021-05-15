@@ -1,7 +1,7 @@
 import React from 'react';
 import './register.scss';
 
-class EditVaccineCenter extends React.Component {
+class EditVaccine extends React.Component {
 	constructor(props){
 		super(props);
 
@@ -21,13 +21,13 @@ class EditVaccineCenter extends React.Component {
 		}
 
 		this.id = this.props.match.params.id;
+
 		this.name_ref = React.createRef();
-		this.address_ref = React.createRef();
+		this.quantity_ref = React.createRef();
 	}
 
 	componentDidMount() {
-		const url = process.env.REACT_APP_API_URL + "/vaccine_centers/" + this.id;
-		const localitiesUrl = process.env.REACT_APP_API_URL + "/localities";
+		const url = process.env.REACT_APP_API_URL + "/vaccines/" + this.id;
 		
 		fetch(url, {
 			method: "GET",
@@ -36,42 +36,17 @@ class EditVaccineCenter extends React.Component {
 				"Authorization": "Bearer " + this.storedJwt
 			}
 		})
-		.then(response => response.json().then(json => this.handleGetCenterResponse(response.status, json.response)))
-		.then(() => {
-			fetch(localitiesUrl, {
-				method: "GET",
-				mode: "cors",
-				headers: {
-					"Authorization": "Bearer " + this.storedJwt
-				}
-			})
-			.then(response => response.json().then(json => this.handleGetLocalitiesResponse(response.status, json.response)))
-		})
-		.catch(error => console.log(error));
+		.then(response => response.json().then(json => this.handleGetVaccineResponse(response.status, json.response)))
 	}
 
-	handleGetCenterResponse(status, response) {
+	handleGetVaccineResponse(status, response) {
 		if(Math.floor(status / 100) === 2) {
 			let fields = {};
 
 			fields["name"] = this.name_ref.current.value = response.name;
-			fields["address"] = this.address_ref.current.value = response.address;
-			fields["locality"] = response.locality_id;
+			fields["quantity"] = this.quantity_ref.current.value = response.available_quantity;
 
 			this.setState({fields: fields});
-		}
-	}
-
-	handleGetLocalitiesResponse(status, response) {
-		if(Math.floor(status / 100) === 2) {
-			let localities = response.map(locality => {
-				if(locality.id === this.state.fields["locality"]) {
-					return (<option value={locality.id} selected>{locality.name}</option>);
-				} else {
-					return (<option value={locality.id}>{locality.name}</option>);
-				}
-			});
-			this.setState({localities: localities});
 		}
 	}
 
@@ -80,7 +55,7 @@ class EditVaccineCenter extends React.Component {
 			<div class="form_wrapper">
 				<div class="form_container">
 					<div class="title_container">
-						<h2>Editează centrul de vaccinare</h2>
+						<h2>Editează vaccinul</h2>
 					</div>
 					<div class="clearfix">
 						<div class="">
@@ -94,16 +69,10 @@ class EditVaccineCenter extends React.Component {
 								</div>
 								<div class="input_field">
 									<span>
-										<i aria-hidden="true" class="fa fa-building"/>
+										<i aria-hidden="true" class="fa fa-percent"/>
 									</span>
-									<input type="text" name="address" placeholder="Adresă" onChange={this.handleChange.bind(this, "address")}
-										ref={this.address_ref} minLength="4" required />
-								</div>
-								<div class="input_field select_option">
-									<select onChange={this.handleChange.bind(this, "locality")}>
-										{this.state.localities}
-									</select>
-									<div class="select_arrow"></div>
+									<input type="text" value={this.state.fields["quantity"]} name="quantity" placeholder="Cantitate" onChange={this.handleChange.bind(this, "quantity")}
+										ref={this.quantity_ref} minLength="1" required />
 								</div>
 								<input class="button" type="submit" value="Editează" />
 								<span style={{color: "green", "display": "table", "margin": "0 auto"}}>{this.state.successMessage}</span>
@@ -116,7 +85,14 @@ class EditVaccineCenter extends React.Component {
 		);
 	}
 
-	handleChange(field, e){
+	handleChange(field, e) {
+		if(field.localeCompare("quantity") === 0) {
+			const re = /^[0-9\b]+$/;
+			if (e.target.value.localeCompare("") !== 0 && !re.test(e.target.value)) {
+				return;
+			}
+		}
+
 		let fields = this.state.fields;
 		fields[field] = e.target.value;
 		this.setState({fields});
@@ -128,10 +104,9 @@ class EditVaccineCenter extends React.Component {
 		const data = {
 			id: this.id,
 			"name": this.state.fields["name"],
-			"address": this.state.fields["address"],
-			"locality_id": this.state.fields["locality"]
+			"available_quantity": this.state.fields["quantity"]
 		};
-		const url = process.env.REACT_APP_API_URL + "/vaccine_centers";
+		const url = process.env.REACT_APP_API_URL + "/vaccines";
 
 		fetch(url, {
 			method: "PUT",
@@ -148,7 +123,7 @@ class EditVaccineCenter extends React.Component {
 
 	handleStatus(status) {
 		if(Math.floor(status / 100) === 2) {
-			this.setState({successMessage: 'Centrul de vaccinare a fost modificat cu succes.'});
+			this.setState({successMessage: 'Vaccinul a fost modificat cu succes.'});
 			this.setState({errorMessage: ''});
 		}  else {
 			this.setState({errorMessage: 'A apărut o eroare!'});
@@ -162,4 +137,4 @@ class EditVaccineCenter extends React.Component {
 	}
 }
 
-export default EditVaccineCenter;
+export default EditVaccine;

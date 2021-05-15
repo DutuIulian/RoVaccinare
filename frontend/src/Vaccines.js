@@ -23,7 +23,7 @@ class Vaccines extends React.Component {
     }
 
     fetchData = id => {
-        const url = process.env.REACT_APP_API_URL + "/vaccines/" + id;
+        const url = process.env.REACT_APP_API_URL + "/vaccines/vaccine_center/" + id;
 
         fetch(url, {
             method: "GET",
@@ -40,7 +40,7 @@ class Vaccines extends React.Component {
         if('ADMIN'.localeCompare(localStorage.getItem('role')) === 0) {
             return (
                 <table class="centers-box">
-                    <thead><tr><td></td><td></td><td></td><td></td><td><Link to={'/add_vaccine/' + this.id}><input type="submit" value="Adaugă" /></Link></td></tr></thead>
+                    <thead><tr><td></td><td></td><td></td><td></td><td></td><td><Link to={'/add_vaccine/' + this.id}><input type="submit" value="Adaugă" /></Link></td></tr></thead>
                     { this.state.vaccine_list }
                 </table>
             );
@@ -61,16 +61,31 @@ class Vaccines extends React.Component {
                 this.setState({vaccine_list: this.buildTbodyFromString('Nu există niciun vaccin disponibil.')});
             } else {
                 response.forEach((vaccine) => {
-                    if(vaccine.available_quantity > 0) {
-                        content.push(
-                            <tr>
-                                <td>{vaccine.name}</td>
-                                <td>{vaccine.available_quantity}</td>
-                                <td>
-                                    <Link to={'/schedule_vaccine/' + vaccine.id}><span>Programează-te</span></Link>
-                                </td>
-                            </tr>
-                        );
+                    if('ADMIN'.localeCompare(localStorage.getItem('role')) === 0) {
+                        if(vaccine.available_quantity > 0) {
+                            content.push(
+                                <tr>
+                                    <td>{vaccine.name}</td>
+                                    <td>{vaccine.available_quantity}</td>
+                                    <td>
+                                        <Link to={'/schedule_vaccine/' + vaccine.id}><span>Programează-te</span></Link>
+                                    </td>
+                                    <td>
+                                        <Link to={'/edit_vaccine/' + vaccine.id}><span>Editează</span></Link>
+                                    </td>
+                                </tr>
+                            );
+                        } else {
+                            content.push(
+                                <tr>
+                                    <td>{vaccine.name}</td>
+                                    <td>{vaccine.available_quantity}</td>
+                                    <td>
+                                        <Link to={'/schedule_vaccine/' + vaccine.id}><span>Programează-te</span></Link>
+                                    </td>
+                                </tr>
+                            );
+                        }
                     }
                 });
                 this.setState({vaccine_list: (

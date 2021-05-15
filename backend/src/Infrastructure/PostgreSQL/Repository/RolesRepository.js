@@ -13,7 +13,7 @@ const addAsync = async (value) => {
 const getAllAsync = async() => {
     console.info(`Getting all roles from database`);
 
-    return await queryAsync('SELECT * FROM roles');
+    return await queryAsync('SELECT * FROM roles ORDER BY id');
 };
 
 module.exports = {

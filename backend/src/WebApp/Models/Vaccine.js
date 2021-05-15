@@ -13,10 +13,6 @@ class VaccinePostBody {
         if (this.available_quantity < 0) {
             throw new ServerError("Available quantity can not be negative", 400);
         }
-
-        if (!this.center_id || this.center_id < 1) {
-            throw new ServerError("Id should be a positive integer", 400);
-        }
     }
 
     get Name () {
@@ -25,10 +21,6 @@ class VaccinePostBody {
 
     get AvailableQuantity () {
         return this.available_quantity;
-    }
-
-    get CenterId () {
-        return this.center_id;
     }
 }
 

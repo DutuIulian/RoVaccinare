@@ -21,16 +21,25 @@ Router.post('/', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.au
 });
 
 Router.put('/', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.authorizeRoles('ADMIN'), async (req, res) => {
-    const vaccineBody = new VaccinePutBody(req.body);
-    await VaccinesRepository.updateAsync(vaccineBody.id, vaccineBody.name, vaccineBody.available_quantity, vaccineBody.center_id);
+    const vaccineBody = new VaccinePutBody(req.body, req.body.id);
+    const vaccine = await VaccinesRepository.updateAsync(vaccineBody.id, vaccineBody.name, vaccineBody.available_quantity);
+    ResponseFilter.setResponseDetails(res, 200, new VaccineResponse(vaccine));
 });
 
-Router.get('/:center_id', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.authorizeRoles('ADMIN', 'SUPPORT', 'USER'), async (req, res) => {
+Router.get('/vaccine_center/:center_id', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.authorizeRoles('ADMIN', 'SUPPORT', 'USER'), async (req, res) => {
     let {
         center_id
     } = req.params;
     const vaccines = await VaccinesRepository.getAllByCenterIdAsync(center_id);
     ResponseFilter.setResponseDetails(res, 200, vaccines.map(vaccine => new VaccineResponse(vaccine)));
+});
+
+Router.get('/:id', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.authorizeRoles('ADMIN', 'SUPPORT', 'USER'), async (req, res) => {
+    let {
+        id
+    } = req.params;
+    const vaccine = await VaccinesRepository.getByIdAsync(id);
+    ResponseFilter.setResponseDetails(res, 200, new VaccineResponse(vaccine));
 });
 
 module.exports = Router;
