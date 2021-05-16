@@ -21,19 +21,36 @@ const updateAsync = async (id, date_time, status, test_id, user_id) => {
         [date_time, status, test_id, user_id, id]
     );
     return test_appointments[0];
-}
+};
+
+const updateStatusAsync = async (id, status) => {
+    console.info(`Updating test appointment with id ${id}`);
+    
+    const test_appointments = await queryAsync(
+        `UPDATE test_appointments SET status = $1 WHERE id = $2`,
+        [status, id]
+    );
+    return test_appointments[0];
+};
 
 const getAllByUserIdAsync = async(user_id) => {
     console.info(`Getting all test appointments with user_id ${user_id}`);
 
-    return await queryAsync(`SELECT * FROM test_appointments WHERE user_id=$1`, [user_id]);
+    return await queryAsync(
+        `SELECT ta.id, ta.date_time AT TIME ZONE 'IOT' AS date_time, ta.status, ta.last_update AT TIME ZONE 'IOT' AS last_update, t.name AS test_name, tc.name AS center_name
+            FROM test_appointments ta
+            JOIN tests t ON ta.test_id=t.id
+            JOIN test_centers tc ON t.center_id=tc.id
+            WHERE user_id=$1`,
+        [user_id]
+    );
 };
 
 const getAllActiveByUserIdAsync = async(user_id) => {
     console.info(`Getting all active test appointments with user_id ${user_id}`);
 
     return await queryAsync(
-        `SELECT * FROM test_appointments WHERE user_id=$1 AND status!='Inchis'`,
+        `SELECT * FROM test_appointments WHERE user_id=$1 AND status!='Inchis' AND status!='Ratat'`,
         [user_id]
     );
 };
@@ -59,6 +76,7 @@ const deleteByTestIdAsync = async(test_id) => {
 module.exports = {
     addAsync,
     updateAsync,
+    updateStatusAsync,
     getAllByUserIdAsync,
     getAllActiveByUserIdAsync,
     getGraphByUserId,

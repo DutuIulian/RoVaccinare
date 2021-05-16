@@ -63,11 +63,14 @@ class VaccineAppointmentPutBody extends VaccineAppointmentPostBody {
 }
 
 class VaccineAppointmentResponse {
-    constructor(vaccine_center) {
-        this.date_time = vaccine_center.date_time;
-        this.status = vaccine_center.status;
-        this.vaccine_id = vaccine_center.vaccine_id;
-        this.user_id = vaccine_center.user_id;
+    constructor(vaccine_appointment) {
+        this.date_time = vaccine_appointment.date_time.toISOString().replace(/T/, ' ').replace(/\..+/, '');
+        this.status = vaccine_appointment.status;
+        this.user_id = vaccine_appointment.user_id;
+        this.vaccine_name = vaccine_appointment.vaccine_name;
+        this.center_name = vaccine_appointment.center_name;
+        this.last_update = vaccine_appointment.last_update.toISOString().replace(/T/, ' ').replace(/\..+/, '');
+        this.id = vaccine_appointment.id;
     }
 }
 

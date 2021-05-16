@@ -29,6 +29,21 @@ Router.post('/', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.au
     ResponseFilter.setResponseDetails(res, 201, new TestAppointmentResponse(testAppointment), req.originalUrl);
 });
 
+Router.put('/status', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.authorizeRoles('ADMIN', 'SUPPORT'), async (req, res) => {
+    let id = req.body.id;
+    if (!id || id < 1) {
+        throw new ServerError("Id should be a positive integer", 400);
+    }
+
+    let status = req.body.status;
+    if (!status) {
+        throw new ServerError(`Status is missing`, 400);
+    }
+
+    await TestAppointmentsRepository.updateStatusAsync(id, status);
+    ResponseFilter.setResponseDetails(res, 200, "The status was updated.");
+});
+
 Router.put('/', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.authorizeRoles('ADMIN', 'SUPPORT', 'USER'), async (req, res) => {
     const testAppointmentBody = new TestAppointmentPutBody(req);
     await TestAppointmentsRepository.updateAsync(testAppointmentBody.id, testAppointmentBody.name, testAppointmentBody.address, testAppointmentBody.locality_id);
@@ -67,6 +82,10 @@ Router.get('/:user_id', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFi
     let {
         user_id
     } = req.params;
+    if (!user_id || user_id < 1) {
+        throw new ServerError("Id should be a positive integer", 400);
+    }
+
     const testAppointments = await TestAppointmentsRepository.getAllByUserIdAsync(user_id);
     ResponseFilter.setResponseDetails(res, 200, testAppointments.map(testAppointment => new TestAppointmentResponse(testAppointment)));
 });

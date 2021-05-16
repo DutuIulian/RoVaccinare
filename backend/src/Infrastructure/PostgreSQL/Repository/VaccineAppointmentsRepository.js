@@ -21,19 +21,36 @@ const updateAsync = async (id, date_time, status, vaccine_id, user_id) => {
         [date_time, status, vaccine_id, user_id, id]
     );
     return vaccine_appointments[0];
-}
+};
+
+const updateStatusAsync = async (id, status) => {
+    console.info(`Updating vaccine appointment with id ${id}`);
+    
+    const vaccine_appointments = await queryAsync(
+        `UPDATE vaccine_appointments SET status = $1 WHERE id = $2`,
+        [status, id]
+    );
+    return vaccine_appointments[0];
+};
 
 const getAllByUserIdAsync = async(user_id) => {
     console.info(`Getting all vaccine appointments with user_id ${user_id}`);
 
-    return await queryAsync(`SELECT * FROM vaccine_appointments WHERE user_id=$1`, [user_id]);
+    return await queryAsync(
+        `SELECT va.id, va.date_time AT TIME ZONE 'IOT' AS date_time, va.status, va.last_update AT TIME ZONE 'IOT' AS last_update, v.name AS vaccine_name, vc.name AS center_name
+            FROM vaccine_appointments va
+            JOIN vaccines v ON va.vaccine_id=v.id
+            JOIN vaccine_centers vc ON v.center_id=vc.id
+            WHERE user_id=$1`,
+        [user_id]
+    );
 };
 
 const getAllActiveByUserIdAsync = async(user_id) => {
     console.info(`Getting all active vaccine appointments with user_id ${user_id}`);
 
     return await queryAsync(
-        `SELECT * FROM vaccine_appointments WHERE user_id=$1 AND status!='Inchis'`,
+        `SELECT * FROM vaccine_appointments WHERE user_id=$1 AND status!='Inchis' AND status!='Ratat'`,
         [user_id]
     );
 };
@@ -59,6 +76,7 @@ const deleteByVaccineIdAsync = async(vaccine_id) => {
 module.exports = {
     addAsync,
     updateAsync,
+    updateStatusAsync,
     getAllByUserIdAsync,
     getAllActiveByUserIdAsync,
     getGraphByUserId,

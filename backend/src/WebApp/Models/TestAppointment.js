@@ -60,10 +60,13 @@ class TestAppointmentPutBody extends TestAppointmentPostBody {
 
 class TestAppointmentResponse {
     constructor(test_center) {
-        this.date_time = test_center.date_time;
+        this.date_time = test_center.date_time.toISOString().replace(/T/, ' ').replace(/\..+/, '');
         this.status = test_center.status;
-        this.test_id = test_center.test_id;
         this.user_id = test_center.user_id;
+        this.test_name = test_center.test_name;
+        this.center_name = test_center.center_name;
+        this.last_update = test_center.last_update.toISOString().replace(/T/, ' ').replace(/\..+/, '');
+        this.id = test_center.id;
     }
 }
 

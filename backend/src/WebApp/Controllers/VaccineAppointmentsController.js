@@ -34,6 +34,21 @@ Router.put('/', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.aut
     await VaccineAppointmentsRepository.updateAsync(vaccineAppointmentBody.id, vaccineAppointmentBody.name, vaccineAppointmentBody.address, vaccineAppointmentBody.locality_id);
 });
 
+Router.put('/status', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.authorizeRoles('ADMIN', 'SUPPORT'), async (req, res) => {
+    let id = req.body.id;
+    if (!id || id < 1) {
+        throw new ServerError("Id should be a positive integer", 400);
+    }
+
+    let status = req.body.status;
+    if (!status) {
+        throw new ServerError(`Status is missing`, 400);
+    }
+
+    await VaccineAppointmentsRepository.updateStatusAsync(id, status);
+    ResponseFilter.setResponseDetails(res, 200, "The status was updated.");
+});
+
 Router.get('/graph/:user_id', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.authorizeRoles('ADMIN'), async (req, res) => {
     let {
         user_id

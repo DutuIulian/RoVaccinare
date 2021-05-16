@@ -59,7 +59,7 @@ class Home extends React.Component {
 					content.push(<tr className="regular_table_row"><td>{news.content}</td></tr>);
 					if("ADMIN".localeCompare(this.role) === 0) {
 						content.push(<tr className="regular_table_row"><td><Link to={"/edit_news/" + news.id}><span>Editează</span></Link></td></tr>);
-						content.push(<tr className="regular_table_row"><td><Link onClick={this.deleteNews.bind(this, news.id)}>Sterge</Link></td></tr>);
+						content.push(<tr className="regular_table_row"><td><Link onClick={this.deleteNews.bind(this, news.id)}>Șterge</Link></td></tr>);
 					}
 					content.push(<tr className="regular_table_row"><td><hr /></td></tr>);
 				});
