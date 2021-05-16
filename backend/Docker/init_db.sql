@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS questions (
     id serial PRIMARY KEY,
     title varchar NOT NULL,
     question varchar NOT NULL,
-    answer varchar DEFAULT '',
+    answer varchar,
     user_id integer REFERENCES users(id),
     support_user_id integer DEFAULT 1 REFERENCES users(id),
     pinned boolean DEFAULT false

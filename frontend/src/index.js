@@ -15,10 +15,12 @@ import Vaccines from './Vaccines';
 import ScheduleVaccine from './ScheduleVaccine'
 import VaccineCenterReviews from './VaccineCenterReviews'
 import Questions from './Questions'
+import AnswerQuestion from './AnswerQuestion'
 import AddNews from './AddNews'
 import EditNews from './EditNews'
 import AdminMenu from './AdminMenu'
 import AdministerUser from './AdministerUser'
+import SupportMenu from './SupportMenu'
 import AddUser from './AddUser'
 import AddTestCenter from './AddTestCenter'
 import EditTestCenter from './EditTestCenter'
@@ -42,6 +44,10 @@ if(storedJwt !== null && storedJwt.localeCompare('') !== 0) {
 	];
 	if('ADMIN'.localeCompare(localStorage.getItem('role')) === 0) {
 		links.push(<Link to={'/admin'}><span>Administrare</span></Link>);
+	}
+	if('ADMIN'.localeCompare(localStorage.getItem('role')) === 0
+			|| 'SUPPORT'.localeCompare(localStorage.getItem('role')) === 0) {
+		links.push(<Link to={'/support'}><span>Support</span></Link>);
 	}
 } else {
 	links = (<Link to={'/login'}><span>Autentificare</span></Link>);
@@ -74,10 +80,12 @@ ReactDOM.render(
 				<Route path='/schedule_vaccine/:id' component={ScheduleVaccine} />
 				<Route path='/vaccine_center_reviews/:id' component={VaccineCenterReviews} />
 				<Route path='/questions' component={Questions} />
+				<Route path='/answer_question/:id' component={AnswerQuestion} />
 				<Route path='/add_news' component={AddNews} />
 				<Route path='/edit_news/:id' component={EditNews} />
 				<Route path='/admin' component={AdminMenu} />
 				<Route path='/administer_user/:id' component={AdministerUser} />
+				<Route path='/support' component={SupportMenu} />
 				<Route path='/add_user' component={AddUser} />
 				<Route path='/add_test_center' component={AddTestCenter} />
 				<Route path='/edit_test_center/:id' component={EditTestCenter} />
