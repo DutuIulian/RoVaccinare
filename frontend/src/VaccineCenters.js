@@ -35,7 +35,7 @@ class VaccineCenters extends React.Component {
 		if('ADMIN'.localeCompare(localStorage.getItem('role')) === 0) {
 			return (
 				<table class="centers-box">
-					<thead><tr><td></td><td></td><td></td><td></td><td></td><td><Link to={'/add_vaccine_center'}><input type="submit" value="Adaugă" /></Link></td></tr></thead>
+					<thead><tr><td></td><td></td><td></td><td></td><td></td><td></td><td><Link to={'/add_vaccine_center'}><input type="submit" value="Adaugă" /></Link></td></tr></thead>
 					{ this.state.center_list }
 				</table>
 			);
@@ -57,16 +57,31 @@ class VaccineCenters extends React.Component {
 			} else {
 				response.forEach((center) => {
 					if('ADMIN'.localeCompare(localStorage.getItem('role')) === 0) {
-						content.push(
-							<tr>
-								<td>{center.name}</td>
-								<td>{center.address}</td>
-								<td>{center.locality}</td>
-								<td><Link to={'/vaccines/' + center.id}><span>Programează-te</span></Link></td>
-								<td><Link to={'/vaccine_center_reviews/' + center.id}><span>Recenzii</span></Link></td>
-								<td><Link to={'/edit_vaccine_center/' + center.id}><span>Editează</span></Link></td>
-							</tr>
-						);
+						if(center.vaccine_count === 0) {
+							content.push(
+								<tr>
+									<td>{center.name}</td>
+									<td>{center.address}</td>
+									<td>{center.locality}</td>
+									<td><Link to={'/vaccines/' + center.id}><span>Programează-te</span></Link></td>
+									<td><Link to={'/vaccine_center_reviews/' + center.id}><span>Recenzii</span></Link></td>
+									<td><Link to={'/edit_vaccine_center/' + center.id}><span>Editează</span></Link></td>
+									<td><Link onClick={this.deleteCenter.bind(this, center.id)}>Șterge</Link></td>
+								</tr>
+							);
+						} else {
+							content.push(
+								<tr>
+									<td>{center.name}</td>
+									<td>{center.address}</td>
+									<td>{center.locality}</td>
+									<td><Link to={'/vaccines/' + center.id}><span>Programează-te</span></Link></td>
+									<td><Link to={'/vaccine_center_reviews/' + center.id}><span>Recenzii</span></Link></td>
+									<td><Link to={'/edit_vaccine_center/' + center.id}><span>Editează</span></Link></td>
+									<td></td>
+								</tr>
+							);
+						}
 					} else {
 						content.push(
 							<tr>
@@ -108,6 +123,23 @@ class VaccineCenters extends React.Component {
 		return (
 			<tbody><tr><td>{text}</td></tr></tbody>
 		);
+	}
+
+	deleteCenter(id) {
+		const url = process.env.REACT_APP_API_URL + "/vaccine_centers/" + id;
+
+		fetch(url, {
+			method: "DELETE",
+			mode: "cors",
+		})
+		.then(response => this.handleDeleteResponse(response.status))
+		.catch(error => this.handleError());
+	}
+
+	handleDeleteResponse(status) {
+		if(Math.floor(status / 100) === 2) {
+			window.location.reload();
+		}
 	}
 }
 

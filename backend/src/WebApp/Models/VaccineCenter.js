@@ -52,6 +52,7 @@ class VaccineCenterResponse {
         this.name = vaccine_center.name;
         this.address = vaccine_center.address;
         this.locality = vaccine_center.locality;
+        this.vaccine_count = parseInt(vaccine_center.vaccine_count);
         this.id = vaccine_center.id;
     }
 }

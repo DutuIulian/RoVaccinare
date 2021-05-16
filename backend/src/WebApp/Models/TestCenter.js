@@ -52,6 +52,7 @@ class TestCenterResponse {
         this.name = test_center.name;
         this.address = test_center.address;
         this.locality = test_center.locality;
+        this.test_count = parseInt(test_center.test_count);
         this.id = test_center.id;
     }
 }

@@ -26,10 +26,14 @@ const updateAsync = async (id, name, address, locality_id) => {
 const getAllAsync = async() => {
     console.info(`Getting all test centers from database`);
 
-    return await queryAsync(`SELECT tc.id, tc.name, tc.address, loc.name AS locality
-                                FROM test_centers tc
-                                JOIN localities loc ON tc.locality_id=loc.id
-                                ORDER BY tc.id ASC`);
+    return await queryAsync(
+        `SELECT tc.id, tc.name, tc.address, loc.name AS locality, COUNT(t.id) AS test_count
+            FROM test_centers tc
+            JOIN localities loc ON tc.locality_id=loc.id
+            LEFT JOIN tests t ON tc.id=t.center_id
+            GROUP BY loc.name, tc.id
+            ORDER BY tc.id ASC`
+    );
 };
 
 const getByIdAsync = async(id) => {
@@ -45,9 +49,17 @@ const getByIdAsync = async(id) => {
     return test_centers[0];
 };
 
+const deleteByIdAsync = async(id) => {
+    console.info(`Deleting the test center with id ${id} from database`);
+
+    const tests = await queryAsync('DELETE FROM test_centers WHERE id = $1 RETURNING *', [id]);
+    return tests[0];
+};
+
 module.exports = {
     addAsync,
     updateAsync,
     getAllAsync,
-    getByIdAsync
+    getByIdAsync,
+    deleteByIdAsync
 }
