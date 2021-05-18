@@ -66,6 +66,7 @@ class AdminMenu extends React.Component {
 							<td>{user.address}</td>
 							<td>{user.role}</td>
 							<td><Link to={'/administer_user/' + user.id}><span>Administrează</span></Link></td>
+							<td><Link onClick={this.deleteUser.bind(this, user.id)}><span>Șterge</span></Link></td>
 						</tr>
 					);
 				});
@@ -89,6 +90,20 @@ class AdminMenu extends React.Component {
 		} else {
 			this.setState({news_list: this.buildTbodyFromString("A apărut o eroare!")});
 		}
+	}
+
+	deleteUser(id) {
+		const url = process.env.REACT_APP_API_URL + "/users/" + id;
+
+		fetch(url, {
+			method: "DELETE",
+			mode: "cors",
+			headers: {
+				"Authorization": "Bearer " + this.storedJwt
+			}
+		})
+		//.then(response => window.location.reload())
+		.catch(error => this.handleError());
 	}
 
 	handleError() {

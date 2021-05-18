@@ -63,11 +63,19 @@ const deleteByTestCenterIdAsync = async(center_id) => {
     return test_center_reviews[0];
 };
 
+const deleteByUserIdAsync = async(user_id) => {
+    console.info(`Deleting the test center reviews with user_id ${user_id} from database`);
+
+    const test_center_reviews = await queryAsync('DELETE FROM test_center_reviews WHERE user_id = $1 RETURNING *', [user_id]);
+    return test_center_reviews[0];
+};
+
 module.exports = {
     addAsync,
     updateAsync,
     getByCenterIdAsync,
     getByUserIdCenterIdAsync,
     getGraphByUserId,
-    deleteByTestCenterIdAsync
+    deleteByTestCenterIdAsync,
+    deleteByUserIdAsync
 }

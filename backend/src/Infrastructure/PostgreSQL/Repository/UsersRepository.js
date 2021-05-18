@@ -41,14 +41,29 @@ const getByActivationCodeIdAsync = async (activation_code_id) => {
 const getByIdAsync = async (id) => {
     console.info (`Getting user with id ${id}`);
     
-    const users = await queryAsync(`SELECT u.id, u.email, u.last_name, u.first_name, u.cnp, u.address, u.activated, r.value AS role
-        FROM users u
-        JOIN roles r
-        ON u.role_id=r.id
-        WHERE u.id=$1`,
+    const users = await queryAsync(
+        `SELECT u.id, u.email, u.last_name, u.first_name, u.cnp, u.address, u.activated, r.value AS role
+            FROM users u
+            JOIN roles r
+            ON u.role_id=r.id
+            WHERE u.id=$1`,
         [id]
     );
     return users[0];
+};
+
+const getAllByRole = async (role) => {
+    console.info (`Getting users with role ${role}`);
+    
+    const users = await queryAsync(
+        `SELECT u.id, u.email, u.last_name, u.first_name, u.cnp, u.address, u.activated, r.value AS role
+            FROM users u
+            JOIN roles r
+            ON u.role_id=r.id
+            WHERE r.value=$1`,
+        [role]
+    );
+    return users;
 };
 
 const updateRole = async (userId, roleId) => {
@@ -80,13 +95,22 @@ const updateById = async (id, email, last_name, first_name, cnp, address, role, 
     return users[0];
 }
 
+const deleteByIdAsync = async(id) => {
+    console.info(`Deleting the user with id ${id} from database`);
+
+    const users = await queryAsync('DELETE FROM users WHERE id = $1 RETURNING *', [id]);
+    return users[0];
+};
+
 module.exports = {
     getAllAsync,
     addAsync,
     getByUsernameWithRoleAsync,
     getByActivationCodeIdAsync,
     getByIdAsync,
+    getAllByRole,
     updateRole,
     updateActivatedAsync,
-    updateById
+    updateById,
+    deleteByIdAsync
 }

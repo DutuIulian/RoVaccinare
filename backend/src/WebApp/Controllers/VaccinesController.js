@@ -2,6 +2,7 @@ const express = require('express');
 const JWTFilter = require('../Filters/JWTFilter.js');
 
 const VaccinesRepository = require('../../Infrastructure/PostgreSQL/Repository/VaccinesRepository.js');
+const VaccineAppointmentsRepository = require('../../Infrastructure/PostgreSQL/Repository/VaccineAppointmentsRepository.js');
 const AuthorizationFilter = require('../Filters/AuthorizationFilter.js');
 
 const {
@@ -62,6 +63,7 @@ Router.delete('/:id', async (req, res) => {
         throw new ServerError("Id should be a positive integer", 400);
     }
     
+    await VaccineAppointmentsRepository.deleteByVaccineIdAsync(id);
     const vaccine = await VaccinesRepository.deleteByIdAsync(id);
     if (!vaccine) {
         throw new ServerError(`Vaccine with id ${id} does not exist!`, 404);

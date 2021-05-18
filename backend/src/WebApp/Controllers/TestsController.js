@@ -2,6 +2,7 @@ const express = require('express');
 const JWTFilter = require('../Filters/JWTFilter.js');
 
 const TestsRepository = require('../../Infrastructure/PostgreSQL/Repository/TestsRepository.js');
+const TestAppointmentsRepository = require('../../Infrastructure/PostgreSQL/Repository/TestAppointmentsRepository.js');
 const AuthorizationFilter = require('../Filters/AuthorizationFilter.js');
 
 const {
@@ -63,6 +64,7 @@ Router.delete('/:id', async (req, res) => {
         throw new ServerError("Id should be a positive integer", 400);
     }
     
+    await TestAppointmentsRepository.deleteByTestIdAsync(id);
     const test = await TestsRepository.deleteByIdAsync(id);
     if (!test) {
         throw new ServerError(`Test with id ${id} does not exist!`, 404);

@@ -2,6 +2,11 @@ const express = require('express');
 
 const UsersManager = require('../../WebCore/Managers/UsersManager.js');
 const UsersRepository = require('../../Infrastructure/PostgreSQL/Repository/UsersRepository.js');
+const TestAppointmentsRepository = require('../../Infrastructure/PostgreSQL/Repository/TestAppointmentsRepository.js');
+const TestCenterReviewsRepository = require('../../Infrastructure/PostgreSQL/Repository/TestCenterReviewsRepository.js');
+const VaccineAppointmentsRepository = require('../../Infrastructure/PostgreSQL/Repository/VaccineAppointmentsRepository.js');
+const VaccineCenterReviewsRepository = require('../../Infrastructure/PostgreSQL/Repository/VaccineCenterReviewsRepository.js');
+const QuestionsRepository = require('../../Infrastructure/PostgreSQL/Repository/QuestionsRepository.js');
 const JWTFilter = require('../Filters/JWTFilter.js');
 const ServerError = require('../Models/ServerError.js');
 
@@ -82,12 +87,36 @@ Router.put('/:userId/role/:roleId', JWTFilter.authorizeAndExtractTokenAsync, Aut
     await UsersRepository.updateRole(userId, roleId);
 });
 
-Router.put('/', async (req, res) => {
+Router.put('/', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.authorizeRoles('ADMIN'), async (req, res) => {
     const userBody = new UserPutBody(req.body);
     const user = await UsersRepository.updateById(userBody.id, userBody.email,
         userBody.last_name, userBody.first_name, userBody.cnp, userBody.address, userBody.role, userBody.activated);
 
     ResponseFilter.setResponseDetails(res, 200, new UserResponse(user));
+});
+
+Router.delete('/:id', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.authorizeRoles('ADMIN'), async (req, res) => {
+    let {
+        id
+    } = req.params;
+    if (!id || id < 1) {
+        throw new ServerError("Id should be a positive integer", 400);
+    }
+    
+    await TestAppointmentsRepository.deleteByUserIdAsync(id);
+    await TestCenterReviewsRepository.deleteByUserIdAsync(id);
+    await VaccineAppointmentsRepository.deleteByUserIdAsync(id);
+    await VaccineCenterReviewsRepository.deleteByUserIdAsync(id);
+    await QuestionsRepository.deleteByUserIdAsync(id);
+    const admins = await UsersRepository.getAllByRole("ADMIN");
+    await QuestionsRepository.updateSupportUserIdAsync(id, admins[0].id);
+
+    const user = await UsersRepository.deleteByIdAsync(id);
+    if (!user) {
+        throw new ServerError(`User with id ${id} does not exist!`, 404);
+    }
+
+    ResponseFilter.setResponseDetails(res, 204, "Entity deleted succesfully");
 });
 
 module.exports = Router;

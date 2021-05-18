@@ -43,6 +43,16 @@ const updateAnswer = async(id, answer, support_user_id) => {
     return questions[0];
 };
 
+const updateSupportUserIdAsync = async(support_user_id, new_support_user_id) => {
+    console.info(`Updating questions with support_user_id ${support_user_id}`);
+    
+    const questions = await queryAsync(
+        `UPDATE questions SET support_user_id = $1 WHERE support_user_id = $2 RETURNING *`,
+        [new_support_user_id, support_user_id]
+    );
+    return questions;
+};
+
 const getByIdAsync = async(id) => {
     console.info(`Getting question with id ${id}`);
 
@@ -123,14 +133,23 @@ const getAllByUserIdAsync = async(user_id) => {
     return questions;
 };
 
+const deleteByUserIdAsync = async(user_id) => {
+    console.info(`Deleting the questions with user_id ${user_id} from database`);
+
+    const questions = await queryAsync('DELETE FROM questions WHERE user_id = $1 RETURNING *', [user_id]);
+    return questions[0];
+};
+
 module.exports = {
     addAsync,
     updateAsync,
     updatePinnedAsync,
     updateAnswer,
+    updateSupportUserIdAsync,
     getByIdAsync,
     getAllPinnedAsync,
     getAllUnansweredAsync,
     getAllAnsweredAsync,
-    getAllByUserIdAsync
+    getAllByUserIdAsync,
+    deleteByUserIdAsync
 }

@@ -73,6 +73,13 @@ const deleteByTestIdAsync = async(test_id) => {
     return test_appointments[0];
 };
 
+const deleteByUserIdAsync = async(user_id) => {
+    console.info(`Deleting the test appointments with user_id ${user_id} from database`);
+
+    const test_appointments = await queryAsync('DELETE FROM test_appointments WHERE user_id = $1 RETURNING *', [user_id]);
+    return test_appointments[0];
+};
+
 module.exports = {
     addAsync,
     updateAsync,
@@ -80,5 +87,6 @@ module.exports = {
     getAllByUserIdAsync,
     getAllActiveByUserIdAsync,
     getGraphByUserId,
-    deleteByTestIdAsync
+    deleteByTestIdAsync,
+    deleteByUserIdAsync
 }
