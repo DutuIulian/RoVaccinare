@@ -280,7 +280,7 @@ class AdministerUser extends React.Component {
 					content.push(<tr className="regular_table_row"><td>Status: {appointment.status}</td></tr>);
 					content.push(<tr className="regular_table_row"><td>Data programării: {appointment.date_time}</td></tr>);
 					content.push(<tr className="regular_table_row"><td>Ultima actualizare: {appointment.last_update}</td></tr>);
-					if(appointment.status.localeCompare("Inchis") !== 0 && appointment.status.localeCompare("Ratat") !== 0) {
+					if(appointment.status.localeCompare("Inchis") !== 0 && appointment.status.localeCompare("Ratat") !== 0 && appointment.status.localeCompare("Anulat") !== 0) {
 						content.push(<tr className="regular_table_row"><td><Link onClick={this.updateAppointmentStatus.bind(this, appointment.id, "Inchis", "/test_appointments/status")}>Închide</Link></td></tr>);
 						content.push(<tr className="regular_table_row"><td><Link onClick={this.updateAppointmentStatus.bind(this, appointment.id, "Ratat", "/test_appointments/status")}>Programare ratată</Link></td></tr>);
 					}
@@ -310,7 +310,7 @@ class AdministerUser extends React.Component {
 					content.push(<tr className="regular_table_row"><td>Status: {appointment.status}</td></tr>);
 					content.push(<tr className="regular_table_row"><td>Data programării: {appointment.date_time}</td></tr>);
 					content.push(<tr className="regular_table_row"><td>Ultima actualizare: {appointment.last_update}</td></tr>);
-					if(appointment.status.localeCompare("Inchis") !== 0 && appointment.status.localeCompare("Ratat") !== 0) {
+					if(appointment.status.localeCompare("Inchis") !== 0 && appointment.status.localeCompare("Ratat") !== 0 && appointment.status.localeCompare("Anulat") !== 0) {
 						content.push(<tr className="regular_table_row"><td><Link onClick={this.updateAppointmentStatus.bind(this, appointment.id, "Inchis", "/vaccine_appointments/status")}>Închide</Link></td></tr>);
 						content.push(<tr className="regular_table_row"><td><Link onClick={this.updateAppointmentStatus.bind(this, appointment.id, "Ratat", "/vaccine_appointments/status")}>Programare ratată</Link></td></tr>);
 					}

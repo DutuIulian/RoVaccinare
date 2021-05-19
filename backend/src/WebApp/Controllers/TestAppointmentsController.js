@@ -29,15 +29,30 @@ Router.post('/', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.au
     ResponseFilter.setResponseDetails(res, 201, new TestAppointmentResponse(testAppointment), req.originalUrl);
 });
 
-Router.put('/status', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.authorizeRoles('ADMIN', 'SUPPORT'), async (req, res) => {
+Router.put('/status', JWTFilter.authorizeAndExtractTokenAsync, AuthorizationFilter.authorizeRoles('ADMIN', 'SUPPORT', 'USER'), async (req, res) => {
     let id = req.body.id;
     if (!id || id < 1) {
         throw new ServerError("Id should be a positive integer", 400);
     }
 
+    const appointment = await TestAppointmentsRepository.getByIdAsync(id);
+    if (!appointment) {
+        throw new ServerError(`Test appointment with id ${id} does not exist!`, 404);
+    }
+
+    if (appointment.user_id !== req.user.userId
+            && req.user.userRole.localeCompare("ADMIN") !== 0
+            && req.user.userRole.localeCompare("SUPPORT") !== 0) {
+        throw new ServerError("Only ADMIN and SUPPORT users can update appointments for other users", 401);
+    }
+
     let status = req.body.status;
-    if (!status) {
-        throw new ServerError(`Status is missing`, 400);
+    if(!status) {
+        throw new ServerError("Missing status", 400);
+    } else if(status.localeCompare("Ratat") === 0 || status.localeCompare("Anulat") === 0) {
+        await TestsRepository.increaseQuantityById(appointment.test_id, +1);
+    } else if(status.localeCompare("Inchis") !== 0) {
+        throw new ServerError("Invalid status", 400);
     }
 
     await TestAppointmentsRepository.updateStatusAsync(id, status);

@@ -41,7 +41,8 @@ const getAllByUserIdAsync = async(user_id) => {
             FROM test_appointments ta
             JOIN tests t ON ta.test_id=t.id
             JOIN test_centers tc ON t.center_id=tc.id
-            WHERE user_id=$1`,
+            WHERE user_id=$1
+            ORDER BY ta.date_time DESC`,
         [user_id]
     );
 };
@@ -50,21 +51,28 @@ const getAllActiveByUserIdAsync = async(user_id) => {
     console.info(`Getting all active test appointments with user_id ${user_id}`);
 
     return await queryAsync(
-        `SELECT * FROM test_appointments WHERE user_id=$1 AND status!='Inchis' AND status!='Ratat'`,
+        `SELECT * FROM test_appointments WHERE user_id=$1 AND status!='Inchis' AND status!='Ratat' AND status!='Anulat' ORDER BY date_time DESC`,
         [user_id]
     );
 };
 
 const getGraphByUserId = async(user_id) => {
-    const reviews = await queryAsync(
+    const test_appointments = await queryAsync(
         `SELECT DATE(last_update) AT TIME ZONE 'IOT' AS exact_date, COUNT(*) as count
             FROM test_appointments
             WHERE user_id=$1 AND DATE(last_update) AT TIME ZONE 'IOT' > current_date - interval '30' day
             GROUP BY exact_date`,
         [user_id]
     );
-    return reviews;
+    return test_appointments;
 }
+
+const getByIdAsync = async(id) => {
+    console.info(`Getting test appointment with id ${id}`);
+
+    const test_appointments = await queryAsync(`SELECT * FROM test_appointments WHERE id=$1`, [id]);
+    return test_appointments[0];
+};
 
 const deleteByTestIdAsync = async(test_id) => {
     console.info(`Deleting the test appointments with test_id ${test_id} from database`);
@@ -87,6 +95,7 @@ module.exports = {
     getAllByUserIdAsync,
     getAllActiveByUserIdAsync,
     getGraphByUserId,
+    getByIdAsync,
     deleteByTestIdAsync,
     deleteByUserIdAsync
 }

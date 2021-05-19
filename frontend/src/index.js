@@ -30,6 +30,7 @@ import AddVaccineCenter from './AddVaccineCenter'
 import EditVaccineCenter from './EditVaccineCenter'
 import AddVaccine from './AddVaccine'
 import EditVaccine from './EditVaccine'
+import Appointments from './Appointments'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 let storedJwt = localStorage.getItem('token');
@@ -39,8 +40,7 @@ if(storedJwt !== null && storedJwt.localeCompare('') !== 0) {
 	links = [
 		<Link to={'/test_centers'}><span>Test</span></Link>,
 		<Link to={'/vaccine_centers'}><span>Vaccin</span></Link>,
-		<Link to={'/questions'}><span>Întrebări</span></Link>,
-		<Link to={'/logout'}><span>Deconectare</span></Link>
+		<Link to={'/questions'}><span>Întrebări</span></Link>
 	];
 	if('ADMIN'.localeCompare(localStorage.getItem('role')) === 0) {
 		links.push(<Link to={'/admin'}><span>Administrare</span></Link>);
@@ -49,6 +49,10 @@ if(storedJwt !== null && storedJwt.localeCompare('') !== 0) {
 			|| 'SUPPORT'.localeCompare(localStorage.getItem('role')) === 0) {
 		links.push(<Link to={'/support'}><span>Support</span></Link>);
 	}
+	if('USER'.localeCompare(localStorage.getItem('role')) === 0) {
+		links.push(<Link to={'/appointments'}><span>Programări</span></Link>);
+	}
+	links.push(<Link to={'/logout'}><span>Deconectare</span></Link>);
 } else {
 	links = (<Link to={'/login'}><span>Autentificare</span></Link>);
 }
@@ -95,6 +99,7 @@ ReactDOM.render(
 				<Route path='/edit_vaccine_center/:id' component={EditVaccineCenter} />
 				<Route path='/add_vaccine/:id' component={AddVaccine} />
 				<Route path='/edit_vaccine/:id' component={EditVaccine} />
+				<Route path='/appointments' component={Appointments} />
 			</Switch>
 		</Router>
 		<Footer />

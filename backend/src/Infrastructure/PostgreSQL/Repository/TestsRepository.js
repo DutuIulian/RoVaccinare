@@ -26,7 +26,7 @@ const updateAsync = async (id, name, available_quantity) => {
 const getAllByCenterIdAsync = async(center_id) => {
     console.info(`Getting all tests with center_id ${center_id}`);
 
-    return await queryAsync(`SELECT * FROM tests WHERE center_id=$1`, [center_id]);
+    return await queryAsync(`SELECT * FROM tests WHERE center_id=$1 ORDER BY id ASC`, [center_id]);
 };
 
 const getByIdAsync = async(id) => {
