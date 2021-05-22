@@ -63,7 +63,7 @@ class Questions extends React.Component {
 		return (
 			<>
 				<table class="news">
-					<tbody><tr className="title_table_row"><td>Întrebările altora</td></tr></tbody>
+					<tbody><tr className="title_table_row"><td>Întrebări comune</td></tr></tbody>
 					{this.state.questions_list}
 					<tr><td> </td></tr>
 					<tbody><tr className="title_table_row"><td>Întrebările tale</td></tr></tbody>
@@ -138,6 +138,7 @@ class Questions extends React.Component {
 				response.forEach((question) => {
 					content.push(<tr className="regular_table_row"><td>{question.title}</td></tr>);
 					content.push(<tr className="regular_table_row"><td>{question.question}</td></tr>);
+					content.push(<tr className="regular_table_row"><td>{question.answer}</td></tr>);
 					content.push(<tr className="regular_table_row"><td>{question.user_name}</td></tr>);
 					content.push(<tr className="regular_table_row"><td><hr /></td></tr>);
 				});
